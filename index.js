@@ -15,9 +15,17 @@ class Cloth {
     constructor(ownerName) {
         this.ownerName = ownerName
         this.clean = true
+       this.type = this.getRandomTypeOfCloth()
     }
 
-    isSmelled(human) {
+   getRandomTypeOfCloth() {
+        let randomNum = Math.floor(Math.random() * 3)
+        if(randomNum == 0) { return 'whites'}
+        else if (randomNum == 1) { return 'blacks' }
+        else if (randomNum == 2 || randomNum == 3) { return 'delicates' }
+    } 
+
+    isSmelledBy(human) {
         if(this.clean) {
             console.log(`${human}: Sniff sniff...   This smells amazing! It's staying in the wardrobe!`)
         } else { console.log(`${human}: Sniff sniff... Well, this smells awful. It goes straight into the laundry basket, jesus christ!`)}
@@ -36,9 +44,37 @@ class Human {
         
     }
 
-    putClothesIn(cloth,basket) { 
-        basket.items.push(cloth);
-        this.wardrobe.splice(0,1);
+
+
+    putClothesInBasket(cloth) { 
+        // whenever cloths are 'put in basket' they go to the appropriate one,
+        // according to their type, if and only if it is not full (duh), then
+        // they are taken out of the wardrobe of the owner.
+
+        if (cloth.type == 'whites') { 
+            if(whitesBasket.isFull()) {
+                console.log('This basket seems full, you will have to wash the stuff eventually')
+            } else {
+                whitesBasket.items.push(cloth);
+                this.wardrobe.splice(0,1);
+            }
+        }
+        else if (cloth.type == 'blacks') { 
+            if(blacksBasket.isFull()) {
+                console.log('This basket seems full, you will have to wash the stuff eventually')
+            } else {
+                blacksBasket.items.push(cloth);
+                this.wardrobe.splice(0,1);
+            }
+        }
+        else   { 
+            if(delicatesBasket.isFull()) {
+                console.log('This basket seems full, you will have to wash the stuff eventually')
+            } else {
+                delicatesBasket.items.push(cloth);
+                this.wardrobe.splice(0,1);
+            }        }
+        // then of course they are taken out of the wardrobe
     }
 
     checkBasket(basket) {
@@ -102,7 +138,9 @@ const pino = new Human('Pino',3);
 const gina = new Human('Gina',4);
 const houseMembers = [margherita, pino, gina];
 
-const whitesBasket = new LaundryBasket('whites',5)
+const whitesBasket = new LaundryBasket('whites',5);
+const blacksBasket = new LaundryBasket('blacks',5);
+const delicatesBasket = new LaundryBasket('delicates',3)
 
 //////// THE INTERACTIONS /////////
 
@@ -114,8 +152,8 @@ const whitesBasket = new LaundryBasket('whites',5)
  // Margherita smells the item of clothing, finds it dirty  
  // and puts it in the laundy basket. Wise woman.
 
- margherita.wardrobe[0].isSmelled('Margherita');
- margherita.putClothesIn(margherita.wardrobe[0], whitesBasket);
+ margherita.wardrobe[0].isSmelledBy('Margherita');
+ margherita.putClothesInBasket(margherita.wardrobe[0]);
 
 
 // Gina wears something as well Than she smells all of her clothes,
@@ -129,10 +167,10 @@ gina.wearCloth(gina.wardrobe[0]);
 let i=0
 while ( i < gina.wardrobe.length) {
     let element = gina.wardrobe[i]
-    element.isSmelled('Gina');
+    element.isSmelledBy('Gina');
     if(element.clean) {
         i++
-    } else { gina.putClothesIn(element,whitesBasket) }
+    } else { gina.putClothesInBasket(element) }
 }
 
  // Pino wears ALL of his clothes. Mad style!
@@ -142,26 +180,37 @@ while ( i < gina.wardrobe.length) {
 
  while (pino.wardrobe.length > 0) {
      pino.wearCloth(pino.wardrobe[0]);
-     pino.putClothesIn(pino.wardrobe[0], whitesBasket)
+     pino.putClothesInBasket(pino.wardrobe[0])
  };
 
 
-// The basket seems full enough, Gina checks:
+// some additional putting clothes in basket, for the sake of the example
+// i have to make sure at least one basket gets full :D
+
+gina.putClothesInBasket(gina.wardrobe[0]);
+gina.putClothesInBasket(gina.wardrobe[1]);
+gina.putClothesInBasket(gina.wardrobe[0]);
+margherita.putClothesInBasket(margherita.wardrobe[1]);
+margherita.putClothesInBasket(margherita.wardrobe[0]);
+
+
+
+// The delicates basket seems full enough, Gina checks:
 
 console.log('');
 
-gina.checkBasket(whitesBasket);
+gina.checkBasket(delicatesBasket);
 
 // Turns out her hunch was right: it is full, so she starts the washing machine:
 
 console.log(`pino's wardrobe before the washing has ${pino.wardrobe.length} clean items`)
 
-whitesBasket.washAndReturn();
+delicatesBasket.washAndReturn();
 
 // Everybody's happy, their clothes are clean and they are successfully back
 // in their owners' wardrobe. The laundry basket is empty again, and that
 // is a wonderful sensation for a laundry basket. Order is restored!
 
 console.log(`pino's wardrobe after the washing has ${pino.wardrobe.length} clean items`)
-console.log(`there are ${whitesBasket.items.length} dirty clothes in the basket. Yay!`);
+console.log(`there are ${delicatesBasket.items.length} dirty clothes in the delicates basket. Yay!`);
 
