@@ -1,10 +1,13 @@
+const shortid = require('shortid');
+
 module.exports = class Gift {
-    constructor(name, price, url) {
-        this.name = name;
-        this.price = price;
-        this.url = url;
-        this.giftedToArchive = [];
-        this.tags = [];
+    constructor(name, price, url = 'no-url') {
+        this.name = name
+        this.id = shortid.generate()
+        this.price = price
+        this.url = url
+        this.giftedToArchive = []
+        this.tags = []
     }
 
     assignTag(tag) {
