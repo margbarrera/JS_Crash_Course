@@ -1,5 +1,7 @@
 const shortid = require('shortid');
 
+const allTheFriends = [];
+
 module.exports = class Friend {
     constructor(name, birthday) {
         this.name = name
@@ -8,6 +10,7 @@ module.exports = class Friend {
         this.pastGifts = []
         this.tags = []
         this.possibleGifts = []
+        allTheObjects.push(this)
     }
 
     assignTag(tag) {

@@ -2,10 +2,11 @@ const User = require('./user');
 const Gift = require('./gift');
 const Friend = require('./friend');
 
+// REMEMBER TO GATHER PEOPLE FRIENDS AND GIFTS INTO GLOBAL ARRAYS
 
 
 /// INSTANCES
-
+global.allTheObjects = [];
 const marghi = new User('Marghi');
 
 const sofia = new Friend('Sofia', '10.12')
@@ -19,6 +20,8 @@ const bbq = new Gift('Kieler Kiste für 4 Personen', 295, 'https://www.bbq-laden
 const niceCard = new Gift('Geburtstagskarte Große Konfettis', 0.5, 'https://www.planet-cards.de/glueckwuensche-geburtstag-grosse-konfettis.html')
 const handmadeCookies = new Gift('Chocolate cookies', 2);
 
+
+
 /// INTERACTIONS
 
 marghi.addFriend(sofia);
@@ -29,7 +32,7 @@ console.log(marghi.id);
 
 marghi.assignGiftIdea(sofia, book);
 
-marghi.checkCalendar();
+//marghi.checkCalendar();
 
 
 marghi.saveGiftIdea(bbq);
@@ -39,9 +42,10 @@ marghi.saveGiftIdea(niceCard);
 niceCard.assignTag('boring');
 pina.assignTag('boring');
 
-marghi.giftTheGift(gino, shirt);
-marghi.giftTheGift(gino, book);
+//marghi.giftTheGift(gino, shirt);
+//marghi.giftTheGift(gino, book);
 marghi.assignGiftIdea(gino, bbq);
+console.log(allTheObjects)
 marghi.giftTheGift(gino, shirt);
 marghi.giftTheGift(mario, handmadeCookies);
 

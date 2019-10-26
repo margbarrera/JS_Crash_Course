@@ -1,23 +1,27 @@
 const shortid = require('shortid');
 
+
+
 module.exports = class User {
     constructor(name) {
-        name = this.name
+        this.name = name
         this.id = shortid.generate()
         this.socialCircle = []
         this.unassignedGiftIdeas = []
+        allTheObjects.push(this)
     }
 
     addFriend(friend) {
-        this.socialCircle.push(friend)
+        this.socialCircle.push(friend.id)
     };
 
     saveGiftIdea(gift) {
-        this.unassignedGiftIdeas.push(gift)
+        this.unassignedGiftIdeas.push(gift.id)
     };
 
     checkCalendar() {
         // I need to put in real dates, as for now I'm inputting manually what day it is today
+        // I ALSO NEED TO IMPLEMENT THE IDS OTHERWISE IT'S BROKEN! :O it's complicated
         this.socialCircle.forEach(friend => {
             let today = '10.24'
             let d = friend.birthday - today
@@ -41,22 +45,25 @@ module.exports = class User {
     }
 
     assignGiftIdea(friend, gift) {
-        friend.possibleGifts.push(gift)
+        friend.possibleGifts.push(gift.id)
     };
 
     giftTheGift(friend, gift) {
-        if (!friend.pastGifts.includes(gift)) {
+        if (!friend.pastGifts.includes(gift.id)) {
             if(gift.url == 'no-url') {
                 console.log(`You are gifting ${friend.name} ${gift.name}.`)
             } else {
                 console.log(`You are buying ${friend.name} ${gift.name}. To buy it go over to: ${gift.url}`)
         }
-            friend.pastGifts.push(gift);
-            gift.giftedToArchive.push(friend);
+            friend.pastGifts.push(gift.id);
+            gift.giftedToArchive.push(friend.id);
         } else {
             console.log(`You already gifted ${friend.name} this item! NOT CUTE.`)
             if (friend.possibleGifts.length > 0) {
-                console.log(`Why don't you buy him a ${friend.possibleGifts[0].name} instead?`)
+                // this should loop through all the gifts, find the one that has an ID of possibleGifts[0].id,
+                // and return the name of that one. but how do i loop through all the gifts?
+                
+                console.log(`Why don't you buy him a ${allTheObjects.find(x => x.id == friend.possibleGifts[0].id).name} instead?`)
             }
         }
 

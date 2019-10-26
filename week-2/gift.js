@@ -1,5 +1,7 @@
 const shortid = require('shortid');
 
+
+
 module.exports = class Gift {
     constructor(name, price, url = 'no-url') {
         this.name = name
@@ -8,6 +10,7 @@ module.exports = class Gift {
         this.url = url
         this.giftedToArchive = []
         this.tags = []
+        allTheObjects.push(this)
     }
 
     assignTag(tag) {
