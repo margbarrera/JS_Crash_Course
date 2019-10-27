@@ -1,0 +1,19 @@
+{
+  "name": "giftsapp",
+  "version": "1.0.0",
+  "description": "a gift giving app, in the making",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/margbarrera/JS_Crash_Course.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/margbarrera/JS_Crash_Course/issues"
+  },
+  "homepage": "https://github.com/margbarrera/JS_Crash_Course#readme"
+}

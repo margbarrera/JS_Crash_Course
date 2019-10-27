@@ -1,13 +1,17 @@
 const User = require('./user');
 const Gift = require('./gift');
 const Friend = require('./friend');
+const Database = require('./database') 
 
-// REMEMBER TO GATHER PEOPLE FRIENDS AND GIFTS INTO GLOBAL ARRAYS
 
+// THIS IS THE BAD BAD BAD GLOBAL VARIABLE THAT CONTAINS EVERY INSTANCE.
+// I know it's bad because the internet says so, but I don't understand completely why it's bad.
+
+global.allTheObjects = {};
 
 /// INSTANCES
-global.allTheObjects = [];
-const marghi = new User('Marghi');
+const marg = new User('marg');
+const jan = new User('Jan');
 
 const sofia = new Friend('Sofia', '10.12')
 const mario = new Friend('Mario', '03.09')
@@ -20,35 +24,57 @@ const bbq = new Gift('Kieler Kiste für 4 Personen', 295, 'https://www.bbq-laden
 const niceCard = new Gift('Geburtstagskarte Große Konfettis', 0.5, 'https://www.planet-cards.de/glueckwuensche-geburtstag-grosse-konfettis.html')
 const handmadeCookies = new Gift('Chocolate cookies', 2);
 
+/// SAVING AND LOADING DATA AS A JSON FILE
 
+Database.save('allTheObjects.json', allTheObjects);
+const newlyLoadedData = Database.load('AllTheObjects.json');
 
 /// INTERACTIONS
 
-marghi.addFriend(sofia);
-marghi.addFriend(mario);
-marghi.addFriend(gino);
-marghi.addFriend(pina);
-console.log(marghi.id);
-
-marghi.assignGiftIdea(sofia, book);
-
-//marghi.checkCalendar();
-
-
-marghi.saveGiftIdea(bbq);
-marghi.saveGiftIdea(book);
-marghi.saveGiftIdea(shirt);
-marghi.saveGiftIdea(niceCard);
+book.assignTag('useful');
+shirt.assignTag('clothes');
+bbq.assignTag('expensive');
+bbq.assignTag('food');
 niceCard.assignTag('boring');
+niceCard.assignTag('cheap');
+handmadeCookies.assignTag('food');
+handmadeCookies.assignTag('cheap');
+handmadeCookies.assignTag('handmade');
+
+marg.addFriend(sofia);
+marg.addFriend(mario);
+marg.addFriend(gino);
+marg.addFriend(pina);
+jan.addFriend(sofia);
+jan.addFriend(mario);
+
+marg.assignGiftIdea(sofia, book);
+marg.assignGiftIdea(gino, bbq);
+marg.assignGiftIdea(pina, shirt);
+marg.assignGiftIdea(pina, bbq);
+marg.assignGiftIdea(pina, book);
+marg.assignGiftIdea(pina, handmadeCookies);
+
+marg.checkCalendar();
+
+
+marg.saveGiftIdea(bbq);
+marg.saveGiftIdea(book);
+marg.saveGiftIdea(shirt);
+marg.saveGiftIdea(niceCard);
+marg.saveGiftIdea(handmadeCookies);
+
 pina.assignTag('boring');
+pina.assignTag('food');
 
-//marghi.giftTheGift(gino, shirt);
-//marghi.giftTheGift(gino, book);
-marghi.assignGiftIdea(gino, bbq);
-console.log(allTheObjects)
-marghi.giftTheGift(gino, shirt);
-marghi.giftTheGift(mario, handmadeCookies);
+marg.giftTheGift(gino, shirt);
+marg.giftTheGift(gino, book);
+marg.giftTheGift(gino, shirt);
+marg.giftTheGift(mario, handmadeCookies);
+
+console.log('Logging the result of by price search:')
+marg.filterGiftsPerBudget(30);
+console.log('Logging the result of by tag search:')
+marg.filterGiftsByTag('food');
 
 
-console.log(`You have just 30 euros, with that budget you could buy:`);
-marghi.filterGiftsPerBudget(30).forEach(item => console.log(item.name));

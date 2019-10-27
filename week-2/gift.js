@@ -10,7 +10,7 @@ module.exports = class Gift {
         this.url = url
         this.giftedToArchive = []
         this.tags = []
-        allTheObjects.push(this)
+        allTheObjects[this.id] = this
     }
 
     assignTag(tag) {
