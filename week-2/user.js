@@ -9,42 +9,40 @@ module.exports = class User {
         this.socialCircle = []
         this.unassignedGiftIdeas = []
         allTheObjects[this.id] = this
+        this.calendar = []
     }
 
     addFriend(friend) {
-        this.socialCircle.push(friend.id)
+        this.socialCircle.push(friend.id);
+        this.calendar[friend.name+'(birthday)'] = friend.birthday
     };
+
+    addFestivityToCalendar(name, date) {
+        this.calendar[name] = date
+    }
 
     saveGiftIdea(gift) {
         this.unassignedGiftIdeas.push(gift.id)
     };
 
     checkCalendar() {
-        // I calculate which birthday is closest to today, not sure if it's overly complicated?
+
         let minimumD = 1000;
-        let upcomingBirthdayId;
-        this.socialCircle.forEach(friendId => {
-            var today = new Date();
-            today.setHours(0, 0, 0, 0);
-            let currentDate = (today.getMonth()+1)+'.'+today.getDate()
-            let d = allTheObjects[friendId].birthday - currentDate
+        let upcomingEvent;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const currentDate = (today.getMonth()+1)+'.'+today.getDate()
+
+        for(var property in this.calendar) {
+            let d = this.calendar[property] - currentDate
             if (d < 0) {
                 d = d + 12.00
             }
-            if (d < minimumD) {minimumD = d; upcomingBirthdayId = friendId}
-        })
-
-        let birthdayPerson = allTheObjects[upcomingBirthdayId]
-
-        console.log(`It's ${birthdayPerson.name}'s birthday soon.`);
-        if (birthdayPerson.possibleGifts.length != 0) {
-            let firstPossibleGift = birthdayPerson.getPossibleGifts(1)[0];
-            console.log(`Buy them something, maybe ${firstPossibleGift.name}.`)
-        } else {
-            console.log(`Buy them something, maybe browse your gift ideas. `)
+            if (d < minimumD) { minimumD = d; upcomingEvent = `${property}, on ${this.calendar[property]}` }
         }
-
-        return upcomingBirthdayId
+        console.log(`Next gift-giving occasion is ${upcomingEvent}. Hurry up!`)
+        
+        return upcomingEvent
     }
 
     assignGiftIdea(friend, gift) {
@@ -94,6 +92,15 @@ module.exports = class User {
         taggedIdeas.forEach(x => console.log(allTheObjects[x].name))
           } else { console.log(`You have saved no items with a tag of ${tag}.` )}
         return taggedIdeas;
+    }
+
+    addGiftToEvent(event,gift) {
+        if(event.guestList.includes(this.id)) {
+            if(event.checkIfGiftIsPresent(gift)) { 
+                console.log(`Somebody already bought this gift for this event.
+Try to think of somenthig else, it will be much more appreciated.`)
+            } else {  event.giftList.push(gift.id)  }
+        } else { console.log(`You must be invited to the event to be able to partecipate`) }
     }
 
 }
