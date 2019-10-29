@@ -5,6 +5,10 @@ To make things easier it notifies users of upcoming birthdays and help prevent g
 Someday it will do a lot more things, hopefully.
 
 ## The Classes
+
+### Database
+Not a class, but rather a module. It stores all the instances of the classes, in an object, where the ids serve as key to access the objects. It has so far three methods, one is to save in the objects, one is to save them as Json files, and one to load the Json files.
+
 ### User
 **Users** are the persons that are going to actually use the app. They will have a login and password (at some point in the future). For now, they will be created just with a name and an ID. They will also have a social circle composed of their friends and family(!)
 
@@ -29,6 +33,15 @@ Users can perform many tasks, such as:
 * be assigned tags to keep track of their tastes and preferences
 * store a record of all the gifts they received in the past, and all the possible gifts the users would like to buy them in the future
 
+#### New Class: Event
+**properties:** name, giftee, date, guestlist, giftlist, wishlist(optional)
+
+* everybody can be invited (but not the giftee naturally)
+* users that are invited can submit the gift they decided to give for the occasion to the giftlist,
+* duplicates are notified and rejected
+* its date is automatically pushed to the calendar of the guests
+* lists of guests and gifts can be read
+
 ## New possible directions to take (it's going to take AGES)
 First thing that I think I should implement is a more solid calendar. The most important issue is that it doesn't use proper Dates now, just shitty strings. As it is, it's just a list of birthdays really, but it should really include other occasions as well. Maybe it can be an object? Every entry on the calendar should be a DATE that has one or more GIFTEES attached. For example: 01/01(Pina), 12/24(Pina, Mom, Dad, Gino). Let's think about it.
 
@@ -47,13 +60,6 @@ Anyway, since everybody can be friends with everybody, they can also be gifted s
 * only the creator can add items
 * it stores possible gifts (it has to store them as objects though, otherwise it's useless)
 * it can be read by other people, and it has to have a method to remove an item from the list when somebody buys it for the creator
-
-#### New Class: Event
-**properties:** name, giftee, date, guestlist, giftlist, wishlist(optional)
-* can be accessed by everybody who is in the guestlist (but not the giftee naturally)
-* guests submit the gift they decided to give for the occasion to the giftlist, duplicates are notified
-* if a wishlist is attached to it, it is readable by the guests
-* its date is automatically pushed to the calendar of the guests
 
 #### New Possible Class: Secret Santa Event
 **properties:** name, date, guestlist, maxBudget? (just so nobody will be embarassed when they receive a ferrari)

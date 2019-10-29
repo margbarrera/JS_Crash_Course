@@ -1,4 +1,5 @@
 const shortid = require('shortid');
+const Database = require('./database'); 
 
 
 
@@ -10,7 +11,7 @@ module.exports = class Gift {
         this.url = url
         this.giftedToArchive = []
         this.tags = []
-        allTheObjects[this.id] = this
+        Database.saveObject(this)
     }
 
     assignTag(tag) {

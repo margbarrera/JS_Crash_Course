@@ -1,4 +1,5 @@
 const shortid = require('shortid');
+const Database = require('./database'); 
 
 
 module.exports = class Friend {
@@ -9,13 +10,13 @@ module.exports = class Friend {
         this.pastGifts = []
         this.tags = []
         this.possibleGifts = []
-        allTheObjects[this.id] = this
+        Database.saveObject(this)
     }
 
     getPossibleGifts(num) {
         const possibleGiftObjects = []
         for (let i=0; i < num; i++) {
-             possibleGiftObjects.push(allTheObjects[this.possibleGifts[i]]);
+             possibleGiftObjects.push(Database[this.possibleGifts[i]]);
          }
          return possibleGiftObjects;
     }

@@ -1,14 +1,9 @@
 const shortid = require('shortid');
+const Database = require('./database'); 
 
 // New Class: Event
 
-// properties: name, giftee, date, guestlist, giftlist, wishlist(optional)
 
-// everybody can be invited (but not the giftee naturally)
-// users that are invited can submit the gift they decided to give for the occasion to the giftlist,
-// duplicates are notified and rejected
-// its date is automatically pushed to the calendar of the guests
-// lists of guests and gifts can be read
 // TO DO: i should see that just the guests can read the guest list and the gift list
 
 module.exports = class Event {
@@ -20,7 +15,7 @@ module.exports = class Event {
         this.id = shortid.generate()
         this.guestList = []
         this.giftList = []
-        allTheObjects[this.id] = this
+        Database.saveObject(this)
     }
 
     inviteGuest(guest) {
@@ -32,11 +27,11 @@ module.exports = class Event {
 
     readGuestList(){
         console.log(`Guests:`)
-        this.guestList.forEach(x => console.log(allTheObjects[x].name))
+        this.guestList.forEach(x => console.log(Database[x].name))
     }
     readGiftList() {
         console.log(`Gifts:`)
-        this.giftList.forEach(x => console.log(allTheObjects[x].name))
+        this.giftList.forEach(x => console.log(Database[x].name))
     }
 
     checkIfGiftIsPresent(gift) {

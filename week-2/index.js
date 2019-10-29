@@ -1,8 +1,10 @@
 const User = require('./user');
 const Gift = require('./gift');
 const Friend = require('./friend');
-const Database = require('./database') 
-const Event = require('./event')
+const Database = require('./database'); 
+const Event = require('./event');
+const Wishlist = require('./wishlist')
+
 
 // THIS IS THE BAD BAD BAD GLOBAL VARIABLE THAT CONTAINS EVERY INSTANCE.
 // I know it's bad because the internet says so, but I don't understand completely why it's bad.
@@ -26,11 +28,11 @@ const handmadeCookies = new Gift('Chocolate cookies', 2);
 
 /// SAVING AND LOADING DATA AS A JSON FILE
 
-Database.save('allTheObjects.json', allTheObjects);
-const newlyLoadedData = Database.load('AllTheObjects.json');
+/*Database.saveJson('Database.json', allTheObjects);
+const newlyLoadedData = Database.loadJson('Database.json');*/
 
 /// INTERACTIONS
-/*
+
 book.assignTag('useful');
 shirt.assignTag('clothes');
 bbq.assignTag('expensive');
@@ -72,7 +74,7 @@ marg.filterGiftsPerBudget(30);
 console.log('Logging the result of by tag search:')
 marg.filterGiftsByTag('food');
 
-*/
+
 const graduation = new Event('Jan\'s Graduation', jan, '03.06' );
 const wedding = new Event('Tom and Sonja Wedding', 'Tom', '12.28' );
 graduation.inviteGuest(marg);
@@ -99,3 +101,6 @@ marg.addFestivityToCalendar('orthodoxChristmas','01.07');
 console.log(marg.calendar);
 
 marg.checkCalendar();
+
+
+console.log(Database)
