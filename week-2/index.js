@@ -3,13 +3,9 @@ const Gift = require('./gift');
 const Friend = require('./friend');
 const Database = require('./database'); 
 const Event = require('./event');
-const Wishlist = require('./wishlist')
+const Wishlist = require('./wishlist');
+const common = require('./common')
 
-
-// THIS IS THE BAD BAD BAD GLOBAL VARIABLE THAT CONTAINS EVERY INSTANCE.
-// I know it's bad because the internet says so, but I don't understand completely why it's bad.
-
-global.allTheObjects = {};
 
 /// INSTANCES
 const marg = new User('marg');
@@ -28,7 +24,7 @@ const handmadeCookies = new Gift('Chocolate cookies', 2);
 
 /// SAVING AND LOADING DATA AS A JSON FILE
 
-/*Database.saveJson('Database.json', allTheObjects);
+/*Database.saveJson('Database.json', Database.data);
 const newlyLoadedData = Database.loadJson('Database.json');*/
 
 /// INTERACTIONS
@@ -52,7 +48,6 @@ marg.assignGiftIdea(pina, bbq);
 marg.assignGiftIdea(pina, book);
 marg.assignGiftIdea(pina, handmadeCookies);
 
-marg.checkCalendar();
 
 
 marg.saveGiftIdea(bbq);
@@ -69,23 +64,23 @@ marg.giftTheGift(gino, book);
 marg.giftTheGift(gino, shirt);
 marg.giftTheGift(mario, handmadeCookies);
 
-console.log('Logging the result of by price search:')
-marg.filterGiftsPerBudget(30);
-console.log('Logging the result of by tag search:')
-marg.filterGiftsByTag('food');
+common.print('logging the result of by price search:')
+Database.filterGiftsPerBudget(marg,30);
+common.print('logging the result of by tag search:')
+Database.filterGiftsByTag(marg,'useful');
 
 
 const graduation = new Event('Jan\'s Graduation', jan, '03.06' );
 const wedding = new Event('Tom and Sonja Wedding', 'Tom', '12.28' );
 graduation.inviteGuest(marg);
 wedding.inviteGuest(marg);
-marg.addGiftToEvent(graduation, shirt);
+graduation.addGiftToEvent(marg, shirt);
 graduation.readGuestList();
 graduation.readGiftList();
-jan.addGiftToEvent(graduation, bbq);
+graduation.addGiftToEvent(jan, bbq);
 graduation.inviteGuest(jan);
-marg.addGiftToEvent(graduation, bbq);
-marg.addGiftToEvent(graduation, shirt);
+graduation.addGiftToEvent(marg, bbq);
+graduation.addGiftToEvent(marg, shirt);
 
 
 
@@ -96,11 +91,8 @@ marg.addFriend(pina);
 jan.addFriend(sofia);
 jan.addFriend(mario);
 
-marg.addFestivityToCalendar('christmas','12.24');
-marg.addFestivityToCalendar('orthodoxChristmas','01.07');
-console.log(marg.calendar);
+marg.calendar.addEntry('christmas','12.24');
+marg.calendar.addEntry('orthodoxChristmas','01.07');
+console.log(marg.calendar.entries);
+marg.calendar.getUpcomingEvent();
 
-marg.checkCalendar();
-
-
-console.log(Database)

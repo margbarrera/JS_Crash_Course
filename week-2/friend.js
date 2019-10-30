@@ -1,5 +1,6 @@
 const shortid = require('shortid');
 const Database = require('./database'); 
+const common = require('./common')
 
 
 module.exports = class Friend {
@@ -13,16 +14,16 @@ module.exports = class Friend {
         Database.saveObject(this)
     }
 
-    getPossibleGifts(num) {
-        const possibleGiftObjects = []
-        for (let i=0; i < num; i++) {
-             possibleGiftObjects.push(Database[this.possibleGifts[i]]);
-         }
-         return possibleGiftObjects;
-    }
-
     assignTag(tag) {
         this.tags.push(tag)
+    }
+
+    removeTag(tag) {
+        this.tags = this.tags.filter(item => item !== tag)
+    }
+
+    getTags(){
+        return this.tags
     }
 
 }
