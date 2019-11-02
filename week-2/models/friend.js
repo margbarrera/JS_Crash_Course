@@ -1,17 +1,18 @@
 const shortid = require('shortid');
-const Database = require('./database'); 
-const common = require('./common')
+const Database = require('../database'); 
+const common = require('../common')
 
 
 module.exports = class Friend {
-    constructor(name, birthday) {
+    constructor(name, birthday, id = '', pastGifts = [], tags = [], possibleGifts = []) {
         this.name = name
         this.birthday = birthday
         this.id = shortid.generate()
         this.pastGifts = []
         this.tags = []
         this.possibleGifts = []
-        Database.saveObject(this)
+        // DON'T NEED THIS
+        //Database.saveObject(this)
     }
 
     assignTag(tag) {
@@ -26,4 +27,7 @@ module.exports = class Friend {
         return this.tags
     }
 
+    static create({ name, birthday, id, pastGifts, tags, possibleGifts }) {
+        return new Friend(name, birthday, id, pastGifts, tags, possibleGifts)
+    }
 }

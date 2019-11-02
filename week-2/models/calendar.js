@@ -1,13 +1,14 @@
 const shortid = require('shortid');
-const Database = require('./database'); 
-const common = require('./common')
+const Database = require('../database'); 
+const common = require('../common')
 
 module.exports = class Calendar {
-    constructor(creator) {
+    constructor(creator, id = '', entries = []) {
         this.creator = creator
         this.id = shortid.generate()
         this.entries = []
-        Database.saveObject(this)
+        // I WON'T NEED THIS ANYMORE I GUESS
+        //Database.saveObject(this)
 
     }
 
@@ -36,5 +37,7 @@ module.exports = class Calendar {
                 return upcomingEvent
             }
 
-
+            static create({ creator, id, entries }) {
+                return new Calendar(creator, id, entries)
+            }
 }

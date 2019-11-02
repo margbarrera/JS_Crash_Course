@@ -1,31 +1,41 @@
 const shortid = require('shortid');
-const Database = require('./database'); 
-const common = require('./common');
+const Database = require('../database'); 
+const common = require('../common');
 const Calendar = require('./calendar');
+
+const CalendarService = require('../services/calendar-service')
+const GiftService = require('../services/gift-service')
+
 
 
 
 module.exports = class User {
-    constructor(name) {
+    constructor(name, id = '', socialCircle = [], unassignedGiftIdeas = [], assignGiftIdea = {}, calendar = '') {
         this.name = name
         this.id = shortid.generate()
         this.socialCircle = []
         this.unassignedGiftIdeas = []
-        this.assignedGiftIdeas = {}/*this will contain pairs in the form friend.id:gift.id*/
-        Database.saveObject(this)
+        this.assignedGiftIdeas = {}/*this will contain pairs in the form friend.id : gift.id */
+        // DON'T NEED THIS
+        //Database.saveObject(this)
         const userCal = new Calendar(this.id);
-        Database.saveObject(userCal);
-        this.calendar = Database.getData(userCal.id)
+        // NEED TO CHANGE THIS ONE BELOW AS WELL: I DON'T KNOW HOW
+        // Database.saveObject(userCal);
+        CalendarService.add(userCal);
+        this.calendar = CalendarService.find(userCal.id)
+        // this.calendar = Database.getData(userCal.id)
     }
-
-    calendar() {
+    // I'M GUESSING THIS DOESN'T APPLY AT ALL ANYMORE
+    /*calendar() {
 
         //this.calendar = userCal.id;
         return ;
-    }
+    }*/
 
     addFriend(friend) {
         this.socialCircle.push(friend.id);
+                /// NEED TO CHANGE THIS ONE BELOW AS WELL: I DON'T KNOW HOW
+
         this.calendar.addEntry(friend.name+'(birthday)',friend.birthday)
     };
 
@@ -56,38 +66,15 @@ module.exports = class User {
             common.print(`You already gifted ${friend.name} this item! NOT CUTE.`)
             if (this.getAssignedGift(friend) != undefined) {
                 const suggestion = this.getAssignedGift(friend);
-            
-                common.print(`Why don't you buy him a ${Database.getData(suggestion).name} instead?`)
+            // THIS NEEDS TO CHANGE
+                common.print(`Why don't you buy him a ${GiftService.find(suggestion).name} instead?`)
             }
         }
 
     }
-/*
-    checkCalendar() {
-        // TODO: if this returns undefined, it should log 'Nothing here' to the console.
-                let minimumD = 1000;
-                let upcomingEvent;
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const currentDate = (today.getMonth()+1)+'.'+today.getDate()
-        
-                for(var property in this.calendar) {
-                    let d = this.calendar[property] - currentDate
-                    if (d < 0) {
-                        d = d + 12.00
-                    }
-                    if (d < minimumD) { minimumD = d; upcomingEvent = `${property}, on ${this.calendar[property]}` }
-                }
-                if(upcomingEvent != undefined) {
-                    common.print(`Next gift-giving occasion is ${upcomingEvent}. Hurry up!`)
-                } else { common.print(`No upcoming events.`)}
-        
-                return upcomingEvent
-            }
-        
-            addFestivityToCalendar(name, date) {
-                this.calendar[name] = date
-            }
-*/
+
+    static create({ name, id, socialCircle, unassignedGiftIdeas, assignGiftIdea, calendar }) {
+        return new User(name, id, socialCircle, unassignedGiftIdeas, assignGiftIdea, calendar )
+    }
 
 }

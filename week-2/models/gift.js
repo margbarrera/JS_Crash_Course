@@ -1,17 +1,18 @@
 const shortid = require('shortid');
-const Database = require('./database'); 
-const common = require('./common')
+const Database = require('../database'); 
+const common = require('../common')
 
 
 
 module.exports = class Gift {
-    constructor(name, price, url = 'no-url') {
+    constructor(name, price, id = '', url = 'no-url', tags = []) {
         this.name = name
-        this.id = shortid.generate()
         this.price = price
+        this.id = shortid.generate()
         this.url = url
         this.tags = []
-        Database.saveObject(this)
+        // DON'T NEED THIS
+        //Database.saveObject(this)
     }
 
 
@@ -27,6 +28,9 @@ module.exports = class Gift {
         return this.tags
     }
 
+    static create({ name, price, id, url, tags }) {
+        return new Gift( name, price, id, url, tags )
+    }
 
 }
 
