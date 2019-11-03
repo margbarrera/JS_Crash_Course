@@ -2,7 +2,6 @@ const User = require('./models/user');
 const Gift = require('./models/gift');
 const Friend = require('./models/friend');
 const Event = require('./models/event');
-// const Calendar = require('./models/calendar'); // THIS IS PROBABLY NOT NEEDED
 const common = require('./common')
 
 const UserService = require('./services/user-service');
@@ -14,25 +13,10 @@ const CalendarService = require('./services/calendar-service');
 common.clearDB()
 
 async function main() {
-    /*
-    /// INSTANCES
-    let marg = new User('marg');
-    let jan = new User('Jan');
-
-    let sofia = new Friend('Sofia', '10.12')
-    let mario = new Friend('Mario', '03.09')
-    let gino = new Friend('Gino', '10.23')
-    let pina = new Friend('Pina', '01.01')
-    let book = new Gift('JavaScript for Dummies', 47.54, 'https://www.amazon.com/JavaScript-Dummies-Emily-Vander-Veer/dp/0764576593')
-    let shirt = new Gift('Schwarzes Mesh-T-Shirt', 17.99, 'https://www.asos.de/asos-design/asos-design-schwarzes-mesh-t-shirt/prd/11914421?r=1')
-    let bbq = new Gift('Kieler Kiste für 4 Personen', 295, 'https://www.bbq-laden.de/Kieler-Kiste-fuer-4-Personen')
-    let niceCard = new Gift('Geburtstagskarte Große Konfettis', 0.5, 'https://www.planet-cards.de/glueckwuensche-geburtstag-grosse-konfettis.html')
-    let handmadeCookies = new Gift('Chocolate cookies', 2);
-
-    let graduation = new Event('Jan\'s Graduation', jan, '03.06' );
-    let wedding = new Event('Tom and Sonja Wedding', 'Tom', '12.28' );
-*/
-    // ADDING TO DATABASE
+ 
+    //  CREATING THE INSTANCES
+    // ADDING THEM TO DATABASE
+    // AND REASSIGNING THEM FOR BETTER READABILITY
 
     const marg = await UserService.add(new User('marg'));
     const jan = await UserService.add(new User('Jan'));
@@ -111,7 +95,8 @@ main();
 
 
 // OTHER STUFF THAT DOESN'T WORK ANYMORE:
-// Should add some filtering functions, by price and by tag
+// Should add back some filtering functions,
+// i.e. by price and by tag
 // to friends and gifts services
 
 
