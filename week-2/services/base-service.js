@@ -21,7 +21,7 @@ module.exports = class Service {
         }
 
         const items = Flatted.parse(file).map(this.model.create)
-
+        
         resolve(items)
       })
     })

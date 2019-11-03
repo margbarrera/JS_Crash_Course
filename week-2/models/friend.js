@@ -7,7 +7,7 @@ module.exports = class Friend {
     constructor(name, birthday, id = '', pastGifts = [], tags = [], possibleGifts = []) {
         this.name = name
         this.birthday = birthday
-        this.id = shortid.generate()
+        this.id = id
         this.pastGifts = []
         this.tags = []
         this.possibleGifts = []

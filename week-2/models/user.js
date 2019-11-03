@@ -10,27 +10,19 @@ const GiftService = require('../services/gift-service')
 
 
 module.exports = class User {
-    constructor(name, id = '', socialCircle = [], unassignedGiftIdeas = [], assignGiftIdea = {}, calendar = '') {
+    constructor(name, id = undefined, socialCircle = [], unassignedGiftIdeas = [], assignedGiftIdea = {}, calendar = '') {
         this.name = name
-        this.id = shortid.generate()
+        this.id = id
         this.socialCircle = []
         this.unassignedGiftIdeas = []
         this.assignedGiftIdeas = {}/*this will contain pairs in the form friend.id : gift.id */
-        // DON'T NEED THIS
-        //Database.saveObject(this)
         const userCal = new Calendar(this.id);
-        // NEED TO CHANGE THIS ONE BELOW AS WELL: I DON'T KNOW HOW
-        // Database.saveObject(userCal);
         CalendarService.add(userCal);
-        this.calendar = CalendarService.find(userCal.id)
+        // 
+        this.calendar = userCal//CalendarService.find(userCal.id)
         // this.calendar = Database.getData(userCal.id)
     }
-    // I'M GUESSING THIS DOESN'T APPLY AT ALL ANYMORE
-    /*calendar() {
-
-        //this.calendar = userCal.id;
-        return ;
-    }*/
+   
 
     addFriend(friend) {
         this.socialCircle.push(friend.id);
@@ -47,14 +39,13 @@ module.exports = class User {
 
     assignGiftIdea(friend, gift) {
         this.assignedGiftIdeas[friend.id] = gift.id
-        //friend.possibleGifts.push(gift.id)
     };
 
     getAssignedGift(friend) {
         return this.assignedGiftIdeas[friend.id];
     }
 
-    giftTheGift(friend, gift) {
+    async giftTheGift(friend, gift) {
         if (!friend.pastGifts.includes(gift.id)) {
             if(gift.url == 'no-url') {
                 common.print(`You are gifting ${friend.name} ${gift.name}.`)
@@ -67,14 +58,15 @@ module.exports = class User {
             if (this.getAssignedGift(friend) != undefined) {
                 const suggestion = this.getAssignedGift(friend);
             // THIS NEEDS TO CHANGE
-                common.print(`Why don't you buy him a ${GiftService.find(suggestion).name} instead?`)
+                let alternativeGift = await GiftService.find(suggestion);
+                common.print(`Why don't you buy him a ${ alternativeGift.name} instead?`)
             }
         }
 
     }
 
-    static create({ name, id, socialCircle, unassignedGiftIdeas, assignGiftIdea, calendar }) {
-        return new User(name, id, socialCircle, unassignedGiftIdeas, assignGiftIdea, calendar )
+    static create({ name, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar }) {
+        return new User(name, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar )
     }
 
 }

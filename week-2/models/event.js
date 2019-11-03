@@ -15,10 +15,9 @@ module.exports = class Event {
         if(giftee.id) { this.giftee = giftee.id
         } else { this.giftee = giftee }
         this.date = date
-        this.id = shortid.generate()
+        this.id = id
         this.guestList = []
         this.giftList = []
-        //Database.saveObject(this)
     }
 
     inviteGuest(guest) {
@@ -35,15 +34,22 @@ module.exports = class Event {
         } else { return false }
     }
 
-    readGuestList(){
+    async readGuestList(){
         common.print(`Guests:`)
-        // TO BE CHANGED
-        this.guestList.forEach(x => common.print(UserService.find(x).name))
+        // TO BE CHANGED AS IT CAN CONTAIN ALSO FRIENDS || also there's the async thing, shit -_-
+        for (let i=0; i< this.guestList.length; i++) {
+            let guest = await UserService.find(this.guestList[i]);
+            common.print(guest.name)
+        };
     }
-    readGiftList() {
+
+    async readGiftList() {
         common.print(`Gifts:`)
          // TO BE CHANGED
-        this.giftList.forEach(x => common.print(GiftService.find(x).name))
+         for (let i=0; i< this.giftList.length; i++) {
+            let guest = await GiftService.find(this.giftList[i]);
+            common.print(guest.name)
+        }
     }
 
     checkIfGiftIsPresent(gift) {

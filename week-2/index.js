@@ -1,7 +1,6 @@
 const User = require('./models/user');
 const Gift = require('./models/gift');
 const Friend = require('./models/friend');
-//const Database = require('./database'); 
 const Event = require('./models/event');
 // const Calendar = require('./models/calendar'); // THIS IS PROBABLY NOT NEEDED
 const common = require('./common')
@@ -12,41 +11,42 @@ const FriendService = require('./services/friend-service');
 const EventService = require('./services/event-service');
 const CalendarService = require('./services/calendar-service');
 
+common.clearDB()
 
 async function main() {
+    /*
     /// INSTANCES
-    const marg = new User('marg');
-    const jan = new User('Jan');
+    let marg = new User('marg');
+    let jan = new User('Jan');
 
-    const sofia = new Friend('Sofia', '10.12')
-    const mario = new Friend('Mario', '03.09')
-    const gino = new Friend('Gino', '10.23')
-    const pina = new Friend('Pina', '01.01')
+    let sofia = new Friend('Sofia', '10.12')
+    let mario = new Friend('Mario', '03.09')
+    let gino = new Friend('Gino', '10.23')
+    let pina = new Friend('Pina', '01.01')
+    let book = new Gift('JavaScript for Dummies', 47.54, 'https://www.amazon.com/JavaScript-Dummies-Emily-Vander-Veer/dp/0764576593')
+    let shirt = new Gift('Schwarzes Mesh-T-Shirt', 17.99, 'https://www.asos.de/asos-design/asos-design-schwarzes-mesh-t-shirt/prd/11914421?r=1')
+    let bbq = new Gift('Kieler Kiste für 4 Personen', 295, 'https://www.bbq-laden.de/Kieler-Kiste-fuer-4-Personen')
+    let niceCard = new Gift('Geburtstagskarte Große Konfettis', 0.5, 'https://www.planet-cards.de/glueckwuensche-geburtstag-grosse-konfettis.html')
+    let handmadeCookies = new Gift('Chocolate cookies', 2);
 
-    const book = new Gift('JavaScript for Dummies', 47.54, 'https://www.amazon.com/JavaScript-Dummies-Emily-Vander-Veer/dp/0764576593')
-    const shirt = new Gift('Schwarzes Mesh-T-Shirt', 17.99, 'https://www.asos.de/asos-design/asos-design-schwarzes-mesh-t-shirt/prd/11914421?r=1')
-    const bbq = new Gift('Kieler Kiste für 4 Personen', 295, 'https://www.bbq-laden.de/Kieler-Kiste-fuer-4-Personen')
-    const niceCard = new Gift('Geburtstagskarte Große Konfettis', 0.5, 'https://www.planet-cards.de/glueckwuensche-geburtstag-grosse-konfettis.html')
-    const handmadeCookies = new Gift('Chocolate cookies', 2);
-
-    const graduation = new Event('Jan\'s Graduation', jan, '03.06' );
-    const wedding = new Event('Tom and Sonja Wedding', 'Tom', '12.28' );
-
+    let graduation = new Event('Jan\'s Graduation', jan, '03.06' );
+    let wedding = new Event('Tom and Sonja Wedding', 'Tom', '12.28' );
+*/
     // ADDING TO DATABASE
 
-    await UserService.add(marg);
-    await UserService.add(jan);
-    await FriendService.add(sofia);
-    await FriendService.add(mario);
-    await FriendService.add(gino);
-    await FriendService.add(pina);
-    await GiftService.add(book);
-    await GiftService.add(shirt);
-    await GiftService.add(bbq);
-    await GiftService.add(niceCard);
-    await GiftService.add(handmadeCookies);
-    await EventService.add(graduation);
-    await EventService.add(wedding);
+    const marg = await UserService.add(new User('marg'));
+    const jan = await UserService.add(new User('Jan'));
+    const sofia = await FriendService.add(new Friend('Sofia', '10.12'));
+    const mario = await FriendService.add(new Friend('Mario', '03.09'));
+    const gino = await FriendService.add(new Friend('Gino', '10.23'));
+    const pina = await FriendService.add(new Friend('Pina', '01.01'));
+    const book = await GiftService.add(new Gift('JavaScript for Dummies', 47.54, 'https://www.amazon.com/JavaScript-Dummies-Emily-Vander-Veer/dp/0764576593'));
+    const shirt = await GiftService.add(new Gift('Schwarzes Mesh-T-Shirt', 17.99, 'https://www.asos.de/asos-design/asos-design-schwarzes-mesh-t-shirt/prd/11914421?r=1'));
+    const bbq = await GiftService.add(new Gift('Kieler Kiste für 4 Personen', 295, 'https://www.bbq-laden.de/Kieler-Kiste-fuer-4-Personen'));
+    const niceCard = await GiftService.add(new Gift('Geburtstagskarte Große Konfettis', 0.5, 'https://www.planet-cards.de/glueckwuensche-geburtstag-grosse-konfettis.html'));
+    const handmadeCookies = await GiftService.add(new Gift('Chocolate cookies', 2));
+    const graduation = await EventService.add(new Event('Jan\'s Graduation', jan, '03.06' ));
+    const wedding = await EventService.add(new Event('Tom and Sonja Wedding', 'Tom', '12.28' ));
 
     /// INTERACTIONS
 
@@ -59,14 +59,16 @@ async function main() {
     handmadeCookies.assignTag('food');
     handmadeCookies.assignTag('cheap');
     handmadeCookies.assignTag('handmade');
-
+    
+    console.log(bbq.tags);
+    
     marg.addFriend(sofia);
     marg.addFriend(mario);
     marg.addFriend(gino);
     marg.addFriend(pina);
     jan.addFriend(sofia);
     jan.addFriend(mario);
-
+    
 
     marg.assignGiftIdea(sofia, book);
     marg.assignGiftIdea(gino, bbq);
@@ -83,42 +85,36 @@ async function main() {
 
     pina.assignTag('boring');
     pina.assignTag('food');
+    console.log(pina.getTags());
 
-    marg.giftTheGift(gino, shirt);
-    marg.giftTheGift(gino, book);
-    marg.giftTheGift(gino, shirt);
+    await marg.giftTheGift(gino, shirt);
+    await marg.giftTheGift(gino, book);
+    await marg.giftTheGift(gino, shirt);
     marg.giftTheGift(mario, handmadeCookies);
 
     graduation.inviteGuest(marg);
     wedding.inviteGuest(marg);
     graduation.addGiftToEvent(marg, shirt);
-    graduation.readGuestList();
-    graduation.readGiftList();
+    await graduation.readGuestList();
+    await graduation.readGiftList();
     graduation.addGiftToEvent(jan, bbq);
     graduation.inviteGuest(jan);
     graduation.addGiftToEvent(marg, bbq);
     graduation.addGiftToEvent(marg, shirt);
 
-//    marg.calendar.addEntry('christmas','12.24');
-//    marg.calendar.addEntry('orthodoxChristmas','01.07');
-//    marg.calendar.getUpcomingEvent();
+    marg.calendar.addEntry('christmas','12.24');
+    marg.calendar.addEntry('orthodoxChristmas','01.07');
+    marg.calendar.getUpcomingEvent();
 }
 
 main();
 
-/// SAVING AND LOADING DATA AS A JSON FILE
-
-/*Database.saveJson('Database.json', Database.data);
-const newlyLoadedData = Database.loadJson('Database.json');*/
 
 // OTHER STUFF THAT DOESN'T WORK ANYMORE:
+// Should add some filtering functions, by price and by tag
+// to friends and gifts services
 
-// common.print('logging the result of by price search:')
-// Database.filterGiftsPerBudget(marg,30);
-// common.print('logging the result of by tag search:')
-// Database.filterGiftsByTag(marg,'useful');
 
-// console.log(marg.calendar.entries);
 
 
 

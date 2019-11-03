@@ -5,7 +5,7 @@ const common = require('../common')
 module.exports = class Calendar {
     constructor(creator, id = '', entries = []) {
         this.creator = creator
-        this.id = shortid.generate()
+        this.id = id
         this.entries = []
         // I WON'T NEED THIS ANYMORE I GUESS
         //Database.saveObject(this)

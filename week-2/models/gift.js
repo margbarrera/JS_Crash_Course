@@ -8,7 +8,7 @@ module.exports = class Gift {
     constructor(name, price, id = '', url = 'no-url', tags = []) {
         this.name = name
         this.price = price
-        this.id = shortid.generate()
+        this.id = id
         this.url = url
         this.tags = []
         // DON'T NEED THIS
