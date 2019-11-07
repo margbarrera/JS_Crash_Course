@@ -15,19 +15,16 @@ module.exports = class User {
         this.id = id
         this.socialCircle = []
         this.unassignedGiftIdeas = []
-        this.assignedGiftIdeas = {}/*this will contain pairs in the form friend.id : gift.id */
+        this.assignedGiftIdeas = {} /*this will contain pairs in the form friend.id : gift.id */
         const userCal = new Calendar(this.id);
         CalendarService.add(userCal);
         // 
-        this.calendar = userCal//CalendarService.find(userCal.id)
-        // this.calendar = Database.getData(userCal.id)
+        this.calendar = userCal
     }
    
 
     addFriend(friend) {
         this.socialCircle.push(friend.id);
-                /// NEED TO CHANGE THIS ONE BELOW AS WELL: I DON'T KNOW HOW
-
         this.calendar.addEntry(friend.name+'(birthday)',friend.birthday)
     };
 
@@ -57,7 +54,6 @@ module.exports = class User {
             common.print(`You already gifted ${friend.name} this item! NOT CUTE.`)
             if (this.getAssignedGift(friend) != undefined) {
                 const suggestion = this.getAssignedGift(friend);
-            // THIS NEEDS TO CHANGE
                 let alternativeGift = await GiftService.find(suggestion);
                 common.print(`Why don't you buy him a ${ alternativeGift.name} instead?`)
             }

@@ -11,8 +11,7 @@ module.exports = class Friend {
         this.pastGifts = []
         this.tags = []
         this.possibleGifts = []
-        // DON'T NEED THIS
-        //Database.saveObject(this)
+
     }
 
     assignTag(tag) {

@@ -18,7 +18,7 @@ async function main() {
     // ADDING THEM TO DATABASE
     // AND REASSIGNING THEM FOR BETTER READABILITY
 
-    const marg = await UserService.add(new User('marg'));
+    const marg = await UserService.add(new User('Marg'));
     const jan = await UserService.add(new User('Jan'));
     const sofia = await FriendService.add(new Friend('Sofia', '10.12'));
     const mario = await FriendService.add(new Friend('Mario', '03.09'));
@@ -31,6 +31,7 @@ async function main() {
     const handmadeCookies = await GiftService.add(new Gift('Chocolate cookies', 2));
     const graduation = await EventService.add(new Event('Jan\'s Graduation', jan, '03.06' ));
     const wedding = await EventService.add(new Event('Tom and Sonja Wedding', 'Tom', '12.28' ));
+    const party = await EventService.add(new Event('Some Party', 'Bob', '11.22'));
 
     /// INTERACTIONS
 
@@ -85,6 +86,7 @@ async function main() {
     graduation.inviteGuest(jan);
     graduation.addGiftToEvent(marg, bbq);
     graduation.addGiftToEvent(marg, shirt);
+    party.inviteGuest(marg);
 
     marg.calendar.addEntry('christmas','12.24');
     marg.calendar.addEntry('orthodoxChristmas','01.07');

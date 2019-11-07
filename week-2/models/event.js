@@ -23,7 +23,6 @@ module.exports = class Event {
     inviteGuest(guest) {
         if(guest.id != this.giftee) {
             this.guestList.push(guest.id)
-            /// NEED TO CHANGE THIS ONE BELOW AS WELL: I DON'T KNOW HOW
             guest.calendar.addEntry(this.name,this.date)
         } else { common.print(`You can't invite somebody to their own gift event. You would spoil the surprise!`)}
     }
@@ -45,7 +44,6 @@ module.exports = class Event {
 
     async getGiftList() {
         common.print(`Gifts:`)
-         // TO BE CHANGED
          for (let i=0; i< this.giftList.length; i++) {
             let guest = await GiftService.find(this.giftList[i]);
             common.print(guest.name)

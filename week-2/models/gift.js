@@ -11,8 +11,7 @@ module.exports = class Gift {
         this.id = id
         this.url = url
         this.tags = []
-        // DON'T NEED THIS
-        //Database.saveObject(this)
+
     }
 
 
