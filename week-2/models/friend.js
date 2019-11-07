@@ -27,6 +27,10 @@ module.exports = class Friend {
         return this.tags
     }
 
+    getPastGifts() {
+        return this.pastGifts
+    }
+
     static create({ name, birthday, id, pastGifts, tags, possibleGifts }) {
         return new Friend(name, birthday, id, pastGifts, tags, possibleGifts)
     }

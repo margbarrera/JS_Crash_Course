@@ -46,7 +46,7 @@ module.exports = class User {
     }
 
     async giftTheGift(friend, gift) {
-        if (!friend.pastGifts.includes(gift.id)) {
+        if (!friend.getPastGifts().includes(gift.id)) {
             if(gift.url == 'no-url') {
                 common.print(`You are gifting ${friend.name} ${gift.name}.`)
             } else {

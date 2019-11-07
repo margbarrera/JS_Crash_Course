@@ -79,8 +79,8 @@ async function main() {
     graduation.inviteGuest(marg);
     wedding.inviteGuest(marg);
     graduation.addGiftToEvent(marg, shirt);
-    await graduation.readGuestList();
-    await graduation.readGiftList();
+    await graduation.getGuestList();
+    await graduation.getGiftList();
     graduation.addGiftToEvent(jan, bbq);
     graduation.inviteGuest(jan);
     graduation.addGiftToEvent(marg, bbq);
@@ -89,6 +89,8 @@ async function main() {
     marg.calendar.addEntry('christmas','12.24');
     marg.calendar.addEntry('orthodoxChristmas','01.07');
     marg.calendar.getUpcomingEvent();
+
+
 }
 
 main();

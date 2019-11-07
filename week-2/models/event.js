@@ -34,7 +34,7 @@ module.exports = class Event {
         } else { return false }
     }
 
-    async readGuestList(){
+    async getGuestList(){
         common.print(`Guests:`)
         // TO BE CHANGED AS IT CAN CONTAIN ALSO FRIENDS || also there's the async thing, shit -_-
         for (let i=0; i< this.guestList.length; i++) {
@@ -43,7 +43,7 @@ module.exports = class Event {
         };
     }
 
-    async readGiftList() {
+    async getGiftList() {
         common.print(`Gifts:`)
          // TO BE CHANGED
          for (let i=0; i< this.giftList.length; i++) {
