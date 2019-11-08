@@ -27,7 +27,7 @@ const clearDB = function() {
     ];
     for (file of db) {
         if (fs.existsSync(path + file)) {
-            fs.unlinkSync(path + file, print)
+            fs.unlinkSync(path + file, print('cleared'))
         }
     }
 }

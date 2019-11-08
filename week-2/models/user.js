@@ -18,7 +18,7 @@ module.exports = class User {
         this.assignedGiftIdeas = {} /*this will contain pairs in the form friend.id : gift.id */
         const userCal = new Calendar(this.id);
         CalendarService.add(userCal);
-        // 
+        // THIS CREATES PROBLEMS, check calendar json to have a glimpse of the sheer amount of problems
         this.calendar = userCal
     }
    
@@ -26,6 +26,7 @@ module.exports = class User {
     addFriend(friend) {
         this.socialCircle.push(friend.id);
         this.calendar.addEntry(friend.name+'(birthday)',friend.birthday)
+        return friend
     };
 
     saveGiftIdea(gift) {

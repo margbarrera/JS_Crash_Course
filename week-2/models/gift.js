@@ -31,5 +31,9 @@ module.exports = class Gift {
         return new Gift( name, price, id, url, tags )
     }
 
+    setUrl(url) {
+        this.url = url
+    }
+
 }
 

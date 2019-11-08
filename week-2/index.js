@@ -10,105 +10,178 @@ const FriendService = require('./services/friend-service');
 const EventService = require('./services/event-service');
 const CalendarService = require('./services/calendar-service');
 
-common.clearDB()
+const express = require('express');
+const bodyParser = require('body-parser')
 
-async function main() {
- 
-    //  CREATING THE INSTANCES
-    // ADDING THEM TO DATABASE
-    // AND REASSIGNING THEM FOR BETTER READABILITY
-
-    const marg = await UserService.add(new User('Marg'));
-    const jan = await UserService.add(new User('Jan'));
-    const sofia = await FriendService.add(new Friend('Sofia', '10.12'));
-    const mario = await FriendService.add(new Friend('Mario', '03.09'));
-    const gino = await FriendService.add(new Friend('Gino', '10.23'));
-    const pina = await FriendService.add(new Friend('Pina', '01.01'));
-    const book = await GiftService.add(new Gift('JavaScript for Dummies', 47.54, 'https://www.amazon.com/JavaScript-Dummies-Emily-Vander-Veer/dp/0764576593'));
-    const shirt = await GiftService.add(new Gift('Schwarzes Mesh-T-Shirt', 17.99, 'https://www.asos.de/asos-design/asos-design-schwarzes-mesh-t-shirt/prd/11914421?r=1'));
-    const bbq = await GiftService.add(new Gift('Kieler Kiste für 4 Personen', 295, 'https://www.bbq-laden.de/Kieler-Kiste-fuer-4-Personen'));
-    const niceCard = await GiftService.add(new Gift('Geburtstagskarte Große Konfettis', 0.5, 'https://www.planet-cards.de/glueckwuensche-geburtstag-grosse-konfettis.html'));
-    const handmadeCookies = await GiftService.add(new Gift('Chocolate cookies', 2));
-    const graduation = await EventService.add(new Event('Jan\'s Graduation', jan, '03.06' ));
-    const wedding = await EventService.add(new Event('Tom and Sonja Wedding', 'Tom', '12.28' ));
-    const party = await EventService.add(new Event('Some Party', 'Bob', '11.22'));
-
-    /// INTERACTIONS
-
-    book.assignTag('useful');
-    shirt.assignTag('clothes');
-    bbq.assignTag('expensive');
-    bbq.assignTag('food');
-    niceCard.assignTag('boring');
-    niceCard.assignTag('cheap');
-    handmadeCookies.assignTag('food');
-    handmadeCookies.assignTag('cheap');
-    handmadeCookies.assignTag('handmade');
-    
-    console.log(bbq.tags);
-    
-    marg.addFriend(sofia);
-    marg.addFriend(mario);
-    marg.addFriend(gino);
-    marg.addFriend(pina);
-    jan.addFriend(sofia);
-    jan.addFriend(mario);
-    
-
-    marg.assignGiftIdea(sofia, book);
-    marg.assignGiftIdea(gino, bbq);
-    marg.assignGiftIdea(pina, shirt);
-    marg.assignGiftIdea(pina, bbq);
-    marg.assignGiftIdea(pina, book);
-    marg.assignGiftIdea(pina, handmadeCookies);
-
-    marg.saveGiftIdea(bbq);
-    marg.saveGiftIdea(book);
-    marg.saveGiftIdea(shirt);
-    marg.saveGiftIdea(niceCard);
-    marg.saveGiftIdea(handmadeCookies);
-
-    pina.assignTag('boring');
-    pina.assignTag('food');
-    console.log(pina.getTags());
-
-    await marg.giftTheGift(gino, shirt);
-    await marg.giftTheGift(gino, book);
-    await marg.giftTheGift(gino, shirt);
-    marg.giftTheGift(mario, handmadeCookies);
-
-    graduation.inviteGuest(marg);
-    wedding.inviteGuest(marg);
-    graduation.addGiftToEvent(marg, shirt);
-    await graduation.getGuestList();
-    await graduation.getGiftList();
-    graduation.addGiftToEvent(jan, bbq);
-    graduation.inviteGuest(jan);
-    graduation.addGiftToEvent(marg, bbq);
-    graduation.addGiftToEvent(marg, shirt);
-    party.inviteGuest(marg);
-
-    marg.calendar.addEntry('christmas','12.24');
-    marg.calendar.addEntry('orthodoxChristmas','01.07');
-    marg.calendar.getUpcomingEvent();
+//common.clearDB()
 
 
-}
+const app = express()
 
-main();
+app.use(bodyParser.json())
+
+app.set('view engine','pug')
+
+// INDEX
+
+app.get('/', (req, res) => {
+  res.render('index')
+})
+
+///////////////////////// USERS /////////////////////////
+
+// ALL USERS' LIST
+
+app.get('/user/all', async (req, res) => {
+    const allUsers = await UserService.findAll()
+    res.render('users', { allUsers: allUsers})
+})
+
+// FETCH USER BY ID
+
+app.get('/user/:id', async (req, res) => {
+    const id = req.params.id
+    const fetchedUser = await UserService.find(id)
+    res.render('userProfile', {fetchedUser: fetchedUser})
+})
+
+// CREATE USER
+
+app.post('/user/all', async (req, res) => {
+    console.log(req.body)
+    const newUser = await UserService.add(req.body)
+    res.send(newUser)
+})
+
+// DELETE USER
+
+app.delete('/user/:id', async (req, res) => {
+    await UserService.del(req.params.id)
+    res.send('user successfully deleted')
+})
+
+///////////////////////// FRIENDS /////////////////////////
 
 
-// OTHER STUFF THAT DOESN'T WORK ANYMORE:
-// Should add back some filtering functions,
-// i.e. by price and by tag
-// to friends and gifts services
+// ALL FRIENDS' LIST
+
+app.get('/friend/all', async (req, res) => {
+    const allFriends = await FriendService.findAll()
+    res.render('friends', { allFriends: allFriends})
+})
+
+// FETCH FRIEND BY ID
+
+app.get('/friend/:id', async (req, res) => {
+    const id = req.params.id
+    const fetchedFriend = await FriendService.find(id)
+    res.send(fetchedFriend)
+})
+
+// CREATE FRIEND
+
+app.post('/friend/all', async (req, res) => {
+    console.log(req.body)
+    const newFriend = await FriendService.add(req.body)
+    res.send(newFriend)
+})
+
+// DELETE FRIEND
+
+app.delete('/friend/:id', async (req, res) => {
+    await FriendService.del(req.params.id)
+    res.send('friend successfully deleted')
+})
+
+///////////////////////// GIFTS /////////////////////////
 
 
+// ALL GIFTS' LIST
+
+app.get('/gift/all', async (req, res) => {
+    const allGifts = await GiftService.findAll()
+    res.render('gifts', { allGifts: allGifts})
+})
+
+// FETCH GIFT BY ID
+
+app.get('/gift/:id', async (req, res) => {
+    const id = req.params.id
+    const fetchedGift = await GiftService.find(id)
+    res.send(fetchedGift)
+})
+
+// CREATE GIFT
+
+app.post('/gift/all', async (req, res) => {
+    console.log(req.body)
+    const newGift = await GiftService.add(req.body)
+    res.send(newGift)
+})
+
+// DELETE GIFT
+
+app.delete('/gift/:id', async (req, res) => {
+    await GiftService.del(req.params.id)
+    res.send('gift successfully deleted')
+})
+
+///////////////////////// EVENTS /////////////////////////
 
 
+// ALL EVENTS' LIST
 
+app.get('/event/all', async (req, res) => {
+    const allEvents = await EventService.findAll()
+    res.render('events', { allEvents: allEvents})
+})
 
+// FETCH EVENT BY ID
 
+app.get('/event/:id', async (req, res) => {
+    const id = req.params.id
+    const fetchedEvent = await EventService.find(id)
+    res.render('eventProfile',{ fetchedEvent: fetchedEvent})
+})
 
+// CREATE EVENT
 
+app.post('/event/all', async (req, res) => {
+    console.log(req.body)
+    const newEvent = await EventService.add(req.body)
+    res.send(newEvent)
+})
 
+// DELETE EVENT
+
+app.delete('/event/:id', async (req, res) => {
+    await EventService.del(req.params.id)
+    res.send('event successfully deleted')
+})
+
+///////////////////////// USER INTERACTIONS YAY! /////////////////////////
+
+app.post('/event/:id', async (req, res) => {
+    const thisEvent = await EventService.find(req.params.id)
+    const userToInvite = await UserService.find(req.body.id) 
+    thisEvent.inviteGuest(userToInvite)
+    const updatedEvents = await EventService.findAll()
+    updatedEvents.push(thisEvent)
+    await EventService.saveAll(updatedEvents)
+    console.log(updatedEvents.length)
+    res.send(thisEvent.guestList)
+})
+
+///// OK NO, THIS ONE I'LL TRY LATER, I'M LOSING MY MIND
+// app.post('/user/:id', async (req, res) => {
+//     const id = req.params.id
+//     const fetchedUser = await UserService.find(1)
+//     const newFriend = await fetchedUser.addFriend(req.body)
+//     res.send(newFriend)
+// })
+
+//////////////////// RUNNING THE THING ;)
+
+app.listen(3000, () => {
+  console.log('server listening')
+})

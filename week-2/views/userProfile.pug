@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    h1 #{fetchedUser.name}
+    script.
+        console.log('try to add a new friend, like this: axios.post(\'/user/:id\', {name: \'MyName\', birthday: \'05.08\'})')
+    h4 ID: #{fetchedUser.id}
+    h4 Friends:
+    each friend in fetchedUser.socialCircle
+        p1 #{friend}
+    h4 Saved Gift Ideas:
+    p1 #{fetchedUser.unassignedGiftIdeas}
+    h4 Planned Gifts:
+    p1 #{fetchedUser.assignedGiftIdeas}
+    h4 Upcoming events:
+    p1 #{fetchedUser.calendar.getUpcomingEvent()}
+

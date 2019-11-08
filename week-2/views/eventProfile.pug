@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h1 #{fetchedEvent.name}
+    h4 Giftee:
+    p1 #{fetchedEvent.giftee}
+    h4 Date:
+    p1 #{fetchedEvent.date}
+    h4 Guests:
+    p1 #{fetchedEvent.guestList.length} 
+    script.
+        console.log('To invite a guest to this event post their ID. Ex.: axios.post(\'/event/1\', {id: 3})')
+
+

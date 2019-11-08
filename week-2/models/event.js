@@ -22,7 +22,8 @@ module.exports = class Event {
 
     inviteGuest(guest) {
         if(guest.id != this.giftee) {
-            this.guestList.push(guest.id)
+            // CHANGED: THIS NOW PUSHES THE ACTUAL OBJ NOT JUST THE ID, since it makes it a lot easier to work with
+            this.guestList.push(guest)
             guest.calendar.addEntry(this.name,this.date)
         } else { common.print(`You can't invite somebody to their own gift event. You would spoil the surprise!`)}
     }
