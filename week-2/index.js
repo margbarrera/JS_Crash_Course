@@ -13,6 +13,7 @@ const CalendarService = require('./services/calendar-service');
 const express = require('express');
 const bodyParser = require('body-parser')
 
+
 //common.clearDB()
 
 
@@ -25,6 +26,7 @@ app.set('view engine','pug')
 // INDEX
 
 app.get('/', (req, res) => {
+
   res.render('index')
 })
 
@@ -34,6 +36,8 @@ app.get('/', (req, res) => {
 
 app.get('/user/all', async (req, res) => {
     const allUsers = await UserService.findAll()
+    const allCalendars = await CalendarService.findAll()
+    console.log(allCalendars)
     res.render('users', { allUsers: allUsers})
 })
 
@@ -50,6 +54,7 @@ app.get('/user/:id', async (req, res) => {
 app.post('/user/all', async (req, res) => {
     console.log(req.body)
     const newUser = await UserService.add(req.body)
+ //   newUser.createCalendar()
     res.send(newUser)
 })
 
@@ -164,12 +169,9 @@ app.delete('/event/:id', async (req, res) => {
 app.post('/event/:id', async (req, res) => {
     const thisEvent = await EventService.find(req.params.id)
     const userToInvite = await UserService.find(req.body.id) 
-    thisEvent.inviteGuest(userToInvite)
-    const updatedEvents = await EventService.findAll()
-    updatedEvents.push(thisEvent)
-    await EventService.saveAll(updatedEvents)
-    console.log(updatedEvents.length)
-    res.send(thisEvent.guestList)
+    await thisEvent.inviteGuest(userToInvite)
+    await EventService.saveAndReplace(thisEvent)
+    res.send(thisEvent)
 })
 
 ///// OK NO, THIS ONE I'LL TRY LATER, I'M LOSING MY MIND

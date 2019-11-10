@@ -10,18 +10,23 @@ const GiftService = require('../services/gift-service')
 
 
 module.exports = class User {
-    constructor(name, id = undefined, socialCircle = [], unassignedGiftIdeas = [], assignedGiftIdea = {}, calendar = '') {
+    constructor(name, birthday, id = undefined, socialCircle = [], unassignedGiftIdeas = [], assignedGiftIdea = {}, calendar = {}, pastGifts = []) {
         this.name = name
+        this.birthday = birthday
         this.id = id
-        this.socialCircle = []
-        this.unassignedGiftIdeas = []
+        this.socialCircle = socialCircle
+        this.unassignedGiftIdeas = unassignedGiftIdeas
         this.assignedGiftIdeas = {} /*this will contain pairs in the form friend.id : gift.id */
-        const userCal = new Calendar(this.id);
-        CalendarService.add(userCal);
-        // THIS CREATES PROBLEMS, check calendar json to have a glimpse of the sheer amount of problems
-        this.calendar = userCal
+        this.calendar = calendar
+        this.pastGifts = pastGifts
     }
    
+    async createCalendar() {
+        const userCal = new Calendar(this.id);
+        await CalendarService.add(userCal);
+        this.calendar = userCal
+    }
+
 
     addFriend(friend) {
         this.socialCircle.push(friend.id);
@@ -62,8 +67,8 @@ module.exports = class User {
 
     }
 
-    static create({ name, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar }) {
-        return new User(name, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar )
+    static create({ name, birthday, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar, pastGifts }) {
+        return new User(name, birthday, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar, pastGifts )
     }
 
 }

@@ -65,4 +65,11 @@ module.exports = class Service {
       })
     })
   }
+
+  async saveAndReplace(object) {
+    const allObjects = await this.findAll()
+    const index = allObjects.findIndex(x => x.id == object.id)
+    allObjects[index] = object
+    await this.saveAll(allObjects)
+  }
 }

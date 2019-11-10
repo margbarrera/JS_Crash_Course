@@ -10,7 +10,7 @@ module.exports = class Gift {
         this.price = price
         this.id = id
         this.url = url
-        this.tags = []
+        this.tags = tags
 
     }
 

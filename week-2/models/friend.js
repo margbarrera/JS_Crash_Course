@@ -4,13 +4,12 @@ const common = require('../common')
 
 
 module.exports = class Friend {
-    constructor(name, birthday, id = '', pastGifts = [], tags = [], possibleGifts = []) {
+    constructor(name, birthday, id = '', pastGifts = [], tags = []) {
         this.name = name
         this.birthday = birthday
         this.id = id
-        this.pastGifts = []
-        this.tags = []
-        this.possibleGifts = []
+        this.pastGifts = pastGifts
+        this.tags = tags
 
     }
 
@@ -30,7 +29,7 @@ module.exports = class Friend {
         return this.pastGifts
     }
 
-    static create({ name, birthday, id, pastGifts, tags, possibleGifts }) {
-        return new Friend(name, birthday, id, pastGifts, tags, possibleGifts)
+    static create({ name, birthday, id, pastGifts, tags }) {
+        return new Friend(name, birthday, id, pastGifts, tags)
     }
 }

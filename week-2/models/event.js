@@ -16,15 +16,16 @@ module.exports = class Event {
         } else { this.giftee = giftee }
         this.date = date
         this.id = id
-        this.guestList = []
-        this.giftList = []
+        this.guestList = guestList
+        this.giftList = giftList
     }
 
-    inviteGuest(guest) {
+    async inviteGuest(guest) {
         if(guest.id != this.giftee) {
             // CHANGED: THIS NOW PUSHES THE ACTUAL OBJ NOT JUST THE ID, since it makes it a lot easier to work with
             this.guestList.push(guest)
-            guest.calendar.addEntry(this.name,this.date)
+            // calendar is still a workinprogress
+            //guest.calendar.addEntry(this.name,this.date)
         } else { common.print(`You can't invite somebody to their own gift event. You would spoil the surprise!`)}
     }
 

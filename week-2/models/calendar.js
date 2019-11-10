@@ -6,7 +6,7 @@ module.exports = class Calendar {
     constructor(creator, id = '', entries = []) {
         this.creator = creator
         this.id = id
-        this.entries = []
+        this.entries = entries
 
 
     }
