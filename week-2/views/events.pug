@@ -3,7 +3,7 @@ extends layout
 block content
     h1 The number of events in the database is #{allEvents.length}
     script.
-        console.log('To add new events use axios.post specifying a name, a giftee and a date. Ex.: axios.post(\'/event/all\', {name: \'MyName\', giftee: \'Maria\', date: \'05.08\'})')
+        console.log('To add new events use axios.post specifying a name, a giftee and a date. Ex.: axios.post(\'/event\', {name: \'MyName\', giftee: \'Maria\', date: \'05.08\'})')
         console.log('Please note that dates should be formatted this way: \'mm.dd\' Ex.: the 3rd of October is \'10.03\'')
         console.log('To delete an event make sure you know their ID and use axios.delete. Ex.: axios.delete(\'/event/1\') will delete the friend with an ID of 1')
     each event in allEvents 

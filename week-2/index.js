@@ -51,7 +51,7 @@ app.get('/user/:id', async (req, res) => {
 
 // CREATE USER
 
-app.post('/user/all', async (req, res) => {
+app.post('/user', async (req, res) => {
     console.log(req.body)
     const newUser = await UserService.add(req.body)
  //   newUser.createCalendar()
@@ -85,7 +85,7 @@ app.get('/friend/:id', async (req, res) => {
 
 // CREATE FRIEND
 
-app.post('/friend/all', async (req, res) => {
+app.post('/friend', async (req, res) => {
     console.log(req.body)
     const newFriend = await FriendService.add(req.body)
     res.send(newFriend)
@@ -118,7 +118,7 @@ app.get('/gift/:id', async (req, res) => {
 
 // CREATE GIFT
 
-app.post('/gift/all', async (req, res) => {
+app.post('/gift', async (req, res) => {
     console.log(req.body)
     const newGift = await GiftService.add(req.body)
     res.send(newGift)
@@ -151,7 +151,7 @@ app.get('/event/:id', async (req, res) => {
 
 // CREATE EVENT
 
-app.post('/event/all', async (req, res) => {
+app.post('/event', async (req, res) => {
     console.log(req.body)
     const newEvent = await EventService.add(req.body)
     res.send(newEvent)
