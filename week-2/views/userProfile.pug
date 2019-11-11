@@ -3,15 +3,37 @@ extends layout
 block content
     h1 #{fetchedUser.name}
     script.
-        console.log('try to add a new friend, like this: axios.post(\'/user/:id\', {name: \'MyName\', birthday: \'05.08\'})')
+        console.log('try to add a user as a friend, like this: axios.post(\'/user/1\', {id:2})')
+        console.log('To remove a friend, use their ID: axios.post(\'/user/1/remove\', {id:4})')
+        console.log('To save a gift idea without a specific recipient in mind, use its ID:')
+        console.log('Example: axios.post(\'/user/1/save-gift\', {id:2})')
+        console.log('To discard a gift idea use its ID: axios.post(\'/user/:id/discard-idea\', {id:2})'')
+        
     h4 ID: #{fetchedUser.id}
     h4 Friends:
     each friend in fetchedUser.socialCircle
-        p1 #{friend}
+        if (fetchedUser.socialCircle.length > 1)
+            if !(friend == fetchedUser.socialCircle[fetchedUser.socialCircle.length-1])
+                p1 #{friend.name+', '}
+            else
+                p1 #{friend.name}
+        else
+            p1 #{friend.name}
     h4 Saved Gift Ideas:
-    p1 #{fetchedUser.unassignedGiftIdeas}
+    each gift in fetchedUser.unassignedGiftIdeas
+        if (fetchedUser.unassignedGiftIdeas.length > 1)
+            if !(gift == fetchedUser.unassignedGiftIdeas[fetchedUser.unassignedGiftIdeas.length-1])
+                p1 #{gift.name+', '}
+            else
+                p1 #{gift.name}
+        else
+            p1 #{gift.name}
     h4 Planned Gifts:
+    each val, index in fetchedUser.assignedGiftIdeas
+        p1 #{index}: #{val}
+        script.
+            console.log(index)
     p1 #{fetchedUser.assignedGiftIdeas}
     h4 Upcoming events:
-    p1 #{fetchedUser.calendar.getUpcomingEvent()}
+    p1 Not yet functional
 

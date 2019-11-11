@@ -37,7 +37,6 @@ app.get('/', (req, res) => {
 app.get('/user/all', async (req, res) => {
     const allUsers = await UserService.findAll()
     const allCalendars = await CalendarService.findAll()
-    console.log(allCalendars)
     res.render('users', { allUsers: allUsers})
 })
 
@@ -52,7 +51,6 @@ app.get('/user/:id', async (req, res) => {
 // CREATE USER
 
 app.post('/user', async (req, res) => {
-    console.log(req.body)
     const newUser = await UserService.add(req.body)
  //   newUser.createCalendar()
     res.send(newUser)
@@ -80,13 +78,12 @@ app.get('/friend/all', async (req, res) => {
 app.get('/friend/:id', async (req, res) => {
     const id = req.params.id
     const fetchedFriend = await FriendService.find(id)
-    res.send(fetchedFriend)
+    res.render('userProfile', {fetchedFriend: fetchedFriend})
 })
 
 // CREATE FRIEND
 
 app.post('/friend', async (req, res) => {
-    console.log(req.body)
     const newFriend = await FriendService.add(req.body)
     res.send(newFriend)
 })
@@ -119,7 +116,6 @@ app.get('/gift/:id', async (req, res) => {
 // CREATE GIFT
 
 app.post('/gift', async (req, res) => {
-    console.log(req.body)
     const newGift = await GiftService.add(req.body)
     res.send(newGift)
 })
@@ -152,7 +148,6 @@ app.get('/event/:id', async (req, res) => {
 // CREATE EVENT
 
 app.post('/event', async (req, res) => {
-    console.log(req.body)
     const newEvent = await EventService.add(req.body)
     res.send(newEvent)
 })
@@ -166,6 +161,8 @@ app.delete('/event/:id', async (req, res) => {
 
 ///////////////////////// USER INTERACTIONS YAY! /////////////////////////
 
+// INVITING GUESTS TO EVENT
+
 app.post('/event/:id', async (req, res) => {
     const thisEvent = await EventService.find(req.params.id)
     const userToInvite = await UserService.find(req.body.id) 
@@ -174,13 +171,46 @@ app.post('/event/:id', async (req, res) => {
     res.send(thisEvent)
 })
 
-///// OK NO, THIS ONE I'LL TRY LATER, I'M LOSING MY MIND
-// app.post('/user/:id', async (req, res) => {
-//     const id = req.params.id
-//     const fetchedUser = await UserService.find(1)
-//     const newFriend = await fetchedUser.addFriend(req.body)
-//     res.send(newFriend)
-// })
+// ADDING FRIENDS TO USER
+
+app.post('/user/:id', async (req, res) => {
+    const thisUser = await UserService.find(req.params.id)
+    // IF THE FRIEND TO BE ADDED EXISTS AND IT'S A USER
+    const friendToAdd = await UserService.find(req.body.id) 
+    await thisUser.addFriend(friendToAdd)
+    await UserService.saveAndReplace(thisUser)
+    res.send(thisUser)
+})
+
+// REMOVING A FRIEND FROM USER
+
+app.post('/user/:id/remove', async (req, res) => {
+    const thisUser = await UserService.find(req.params.id)
+    // IF THE FRIEND TO BE REMOVED IS A USER
+    await thisUser.unfriend(req.body.id)
+    await UserService.saveAndReplace(thisUser)
+    res.send(thisUser)
+})
+
+// SAVING A GIFT IDEA
+
+app.post('/user/:id/save-gift', async (req, res) => {
+    const thisUser = await UserService.find(req.params.id)
+    // IF THE GIFT EXISTS
+    const gift = await GiftService.find(req.body.id)
+    await thisUser.saveGiftIdea(gift)
+    await UserService.saveAndReplace(thisUser)
+    res.send(thisUser)
+    })
+
+// DISCARDING A GIFT IDEA
+
+app.post('/user/:id/discard-idea', async (req, res) => {
+    const thisUser = await UserService.find(req.params.id)
+    await thisUser.discardGiftIdea(req.body.id)
+    await UserService.saveAndReplace(thisUser)
+    res.send(thisUser)
+})
 
 //////////////////// RUNNING THE THING ;)
 

@@ -10,13 +10,13 @@ const GiftService = require('../services/gift-service')
 
 
 module.exports = class User {
-    constructor(name, birthday, id = undefined, socialCircle = [], unassignedGiftIdeas = [], assignedGiftIdea = {}, calendar = {}, pastGifts = []) {
+    constructor(name, birthday, id = undefined, socialCircle = [], unassignedGiftIdeas = [], assignedGiftIdea = [], calendar = {}, pastGifts = []) {
         this.name = name
         this.birthday = birthday
         this.id = id
         this.socialCircle = socialCircle
         this.unassignedGiftIdeas = unassignedGiftIdeas
-        this.assignedGiftIdeas = {} /*this will contain pairs in the form friend.id : gift.id */
+        this.assignedGiftIdeas = assignedGiftIdea /*this will contain pairs in the form friend.id : gift.id */
         this.calendar = calendar
         this.pastGifts = pastGifts
     }
@@ -28,17 +28,33 @@ module.exports = class User {
     }
 
 
-    addFriend(friend) {
-        this.socialCircle.push(friend.id);
-        this.calendar.addEntry(friend.name+'(birthday)',friend.birthday)
-        return friend
+    async addFriend(friend) {
+        if (this.socialCircle.includes(friend)) {
+            console.log (friend.name+' is already a friend. Yay!')
+        } else {
+        // CHANGED TO PUSH ACTUAL OBJ INSTEAD OF ID
+        console.log(this.socialCircle)
+        this.socialCircle.push(friend);
+        // Need to fix the calendar thing
+        //this.calendar.addEntry(friend.name+'(birthday)',friend.birthday)
+        return friend }
     };
 
-    saveGiftIdea(gift) {
-        if( this.unassignedGiftIdeas.includes(gift.id) ) {
+    async unfriend(friendId) {
+        let index = this.socialCircle.findIndex(x => x.id == friendId)
+        this.socialCircle.splice(index, 1)
+    }
+
+    async saveGiftIdea(gift) {
+        if( this.unassignedGiftIdeas.includes(gift) ) {
             common.print('You already saved this idea.')
-        } else { this.unassignedGiftIdeas.push(gift.id) }   
+        } else { this.unassignedGiftIdeas.push(gift) }   
     };
+
+    async discardGiftIdea(giftId) {
+        let index = this.unassignedGiftIdeas.findIndex(x => x.id == giftId)
+        this.unassignedGiftIdeas.splice(index, 1)
+    }
 
     assignGiftIdea(friend, gift) {
         this.assignedGiftIdeas[friend.id] = gift.id
