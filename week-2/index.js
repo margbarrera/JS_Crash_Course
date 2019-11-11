@@ -12,16 +12,17 @@ const CalendarService = require('./services/calendar-service');
 
 const express = require('express');
 const bodyParser = require('body-parser')
+const path = require('path')
 
 
 //common.clearDB()
 
-
 const app = express()
 
 app.use(bodyParser.json())
+app.set('view engine', 'pug')
 
-app.set('view engine','pug')
+app.use(express.static(path.join(__dirname, 'public')))
 
 // INDEX
 

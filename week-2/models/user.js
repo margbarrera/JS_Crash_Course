@@ -56,7 +56,7 @@ module.exports = class User {
         this.unassignedGiftIdeas.splice(index, 1)
     }
 
-    assignGiftIdea(friend, gift) {
+    async assignGiftIdea(friend, gift) {
         this.assignedGiftIdeas[friend.id] = gift.id
     };
 
