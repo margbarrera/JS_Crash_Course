@@ -1,5 +1,7 @@
 const shortid = require('shortid');
 const Database = require('../database'); 
+const Calendar = require('./calendar');
+const User = require('./user');
 const common = require('../common');
 
 const UserService = require('../services/user-service');
@@ -12,8 +14,7 @@ const GiftService = require('../services/gift-service');
 module.exports = class Event {
     constructor(name, giftee, date, id = '', guestList = [], giftList = []) {
         this.name = name
-        if(giftee.id) { this.giftee = giftee.id
-        } else { this.giftee = giftee }
+        this.giftee = giftee 
         this.date = date
         this.id = id
         this.guestList = guestList
@@ -25,7 +26,7 @@ module.exports = class Event {
             // CHANGED: THIS NOW PUSHES THE ACTUAL OBJ NOT JUST THE ID, since it makes it a lot easier to work with
             this.guestList.push(guest)
             // calendar is still a workinprogress
-            //guest.calendar.addEntry(this.name,this.date)
+            guest.calendar.addEntry(this.name,this.date)
         } else { common.print(`You can't invite somebody to their own gift event. You would spoil the surprise!`)}
     }
 
