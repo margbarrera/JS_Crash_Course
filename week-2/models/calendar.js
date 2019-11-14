@@ -1,17 +1,11 @@
-const shortid = require('shortid');
-const Database = require('../database'); 
 const common = require('../common')
 
 module.exports = class Calendar {
-    constructor(creator, id = '', entries = []) {
-        this.creator = creator
-        this.id = id
+    constructor( entries = []) {
         this.entries = entries
-
-
     }
 
-    addEntry(name, date) {
+     addEntry(name, date) {
         this.entries[name] = date
     }
 
@@ -40,7 +34,8 @@ module.exports = class Calendar {
                 return upcomingEvent
             }
 
-            static create({ creator, id, entries }) {
-                return new Calendar(creator, id, entries)
+            static create({ entries }) {
+                console.log('inside the create function, entries are: '+entries)
+                return new Calendar(entries)
             }
 }

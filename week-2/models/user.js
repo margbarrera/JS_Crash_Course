@@ -1,9 +1,8 @@
-const shortid = require('shortid');
-const Database = require('../database'); 
+//const Database = require('../database'); 
 const common = require('../common');
 const Calendar = require('./calendar');
 
-const CalendarService = require('../services/calendar-service')
+//const CalendarService = require('../services/calendar-service')
 const GiftService = require('../services/gift-service')
 
 
@@ -23,8 +22,9 @@ module.exports = class User {
    
     async createCalendar() {
         const userCal = new Calendar(this.id);
-        await CalendarService.add(userCal);
+        // await CalendarService.add(userCal);
         this.calendar = userCal
+        return userCal
     }
 
 
@@ -36,7 +36,7 @@ module.exports = class User {
         console.log(this.socialCircle)
         this.socialCircle.push(friend);
         // Need to fix the calendar thing
-        //this.calendar.addEntry(friend.name+'(birthday)',friend.birthday)
+        this.calendar.addEntry(friend.name+'(birthday)',friend.birthday)
         return friend }
     };
 
@@ -84,7 +84,12 @@ module.exports = class User {
     }
 
     static create({ name, birthday, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar, pastGifts }) {
-        return new User(name, birthday, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar, pastGifts )
+        const user = new User(name, birthday, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar, pastGifts )
+
+        user.calendar = Calendar.create(calendar)
+
+        return user    
+        
     }
 
 }

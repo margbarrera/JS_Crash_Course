@@ -1,5 +1,6 @@
 const User = require('./models/user');
 const Gift = require('./models/gift');
+const Calendar = require('./models/calendar');
 const Friend = require('./models/friend');
 const Event = require('./models/event');
 const common = require('./common')
@@ -13,7 +14,6 @@ const CalendarService = require('./services/calendar-service');
 const express = require('express');
 const bodyParser = require('body-parser')
 const path = require('path')
-
 
 //common.clearDB()
 
@@ -52,8 +52,10 @@ app.get('/user/:id', async (req, res) => {
 // CREATE USER
 
 app.post('/user', async (req, res) => {
-    const newUser = await UserService.add(req.body)
- //   newUser.createCalendar()
+    const user = await UserService.add(req.body)
+    const newUser = await UserService.find(user.id)
+    await newUser.createCalendar()
+    await UserService.saveAndReplace(newUser)
     res.send(newUser)
 })
 
@@ -169,6 +171,8 @@ app.post('/event/:id', async (req, res) => {
     const userToInvite = await UserService.find(req.body.id) 
     await thisEvent.inviteGuest(userToInvite)
     await EventService.saveAndReplace(thisEvent)
+    await UserService.saveAndReplace(userToInvite)
+ 
     res.send(thisEvent)
 })
 
