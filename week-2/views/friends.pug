@@ -3,7 +3,7 @@ extends layout
 block content
     h1 The number of friends in the database is #{allFriends.length}
     script.
-        console.log('To add new friends use axios.post specifying a name and a birthday. Ex.: axios.post(\'/friend\', {name: \'MyName\', birthday: \'03.24\'})')
+        console.log('To add new friends use axios.post specifying a name and a birthday. Ex.: axios.post(\'/friend/\', {name: \'MyName\', birthday: \'03.24\'})')
         console.log('Please note that birthdays should be formatted this way: \'mm.dd\' Ex.: the 3rd of October is \'10.03\'')
         console.log('To delete a friend make sure you know their ID and use axios.delete. Ex.: axios.delete(\'/friend/1\') will delete the friend with an ID of 1')
     each friend in allFriends 

@@ -3,7 +3,7 @@ extends layout
 block content
     h1 The number of gifts in the database is #{allGifts.length}
     script.
-        console.log('To add new gifts use axios.post specifying a name and a price. Ex.: axios.post(\'/gift\', {name: \'MyName\', price: 22.50})')
+        console.log('To add new gifts use axios.post specifying a name and a price. Ex.: axios.post(\'/gift/\', {name: \'MyName\', price: 22.50})')
         console.log('Please note that prices should be numbers. Ex.: 42.99')
         console.log('To delete a gift make sure you know their ID and use axios.delete. Ex.: axios.delete(\'/gift/1\') will delete the gift with an ID of 1')
     each gift in allGifts 
