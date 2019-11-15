@@ -15,6 +15,18 @@ const echo = function(x) {
     console.log(x)
     return x
 }
+// I NEED TO CHANGE THIS CAUSE IT IS UGLY AND CONVOLUTED (but iit works so I can take my time)
+const containsObjectId = async function (list, obj) {
+    let doesIt = false
+    list.forEach(element => {
+        if (element._id.equals(obj._id) ){
+            doesIt = true        
+        }
+        else {
+            doesIt = false }
+    })
+    return doesIt      
+}
 
 const clearDB = function() {
     const path = "/Users/margheritabarrera/projects/JS_Crash_Course/week-2/";
@@ -32,4 +44,4 @@ const clearDB = function() {
     }
 }
 
-module.exports = { print, dontPrint, echo, clearDB }
+module.exports = { print, dontPrint, echo, clearDB, containsObjectId }

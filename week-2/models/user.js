@@ -1,6 +1,7 @@
 const common = require('../common');
 const Calendar = require('./calendar');
 const GiftService = require('../services/gift-service')
+const Gift = require('./gift')
 
 const mongoose = require('mongoose')
 
@@ -22,10 +23,13 @@ const UserSchema = new mongoose.Schema({
                 }
         }],
 
-    unassignedGiftIdeas: {
-        type: Array,
-        required: false,
-        },
+    unassignedGiftIdeas: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Gift',
+        autopopulate: {
+            maxDepth: 1
+            }
+    }],
 
     assignedGiftIdeas: {
         type: Array,
@@ -71,33 +75,9 @@ module.exports = UserModel
 //     }
 
 
-//     async addFriend(friend) {
-//         if (this.socialCircle.includes(friend)) {
-//             console.log (friend.name+' is already a friend. Yay!')
-//         } else {
-//         // CHANGED TO PUSH ACTUAL OBJ INSTEAD OF ID
-//         console.log(this.socialCircle)
-//         this.socialCircle.push(friend);
-//         // Need to fix the calendar thing
-//         this.calendar.addEntry(friend.name+'(birthday)',friend.birthday)
-//         return friend }
-//     };
 
-//     async unfriend(friendId) {
-//         let index = this.socialCircle.findIndex(x => x.id == friendId)
-//         this.socialCircle.splice(index, 1)
-//     }
 
-//     async saveGiftIdea(gift) {
-//         if( this.unassignedGiftIdeas.includes(gift) ) {
-//             common.print('You already saved this idea.')
-//         } else { this.unassignedGiftIdeas.push(gift) }   
-//     };
 
-//     async discardGiftIdea(giftId) {
-//         let index = this.unassignedGiftIdeas.findIndex(x => x.id == giftId)
-//         this.unassignedGiftIdeas.splice(index, 1)
-//     }
 
 //     async assignGiftIdea(friend, gift) {
 //         this.assignedGiftIdeas[friend.id] = gift.id

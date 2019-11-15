@@ -20,9 +20,14 @@ const EventSchema = new mongoose.Schema({
     },
     date: {
             type: Number,
+             
             required: true,
         },
     guestList: {
+            type: Array,
+            required: false
+    },
+    giftList: {
             type: Array,
             required: false
     }

@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const UserService = require('../services/user-service');
+const GiftService = require('../services/gift-service');
 
 ///////////////////////// USERS /////////////////////////
 
@@ -27,7 +28,6 @@ router.post('/', async (req, res) => {
     const user = await UserService.add(req.body)
     const newUser = await UserService.find(user.id)
     //await newUser.createCalendar()
-    await UserService.saveAndReplace(newUser)
     res.send(newUser)
 })
 
@@ -44,7 +44,6 @@ router.delete('/:id', async (req, res) => {
 
 router.post('/:id/add-friend', async (req, res) => {
     const thisUser = await UserService.find(req.params.id)
-    // IF THE FRIEND TO BE ADDED EXISTS AND IT'S A USER
     const friendToAdd = await UserService.find(req.body.friend) 
     await UserService.addFriend(thisUser, friendToAdd)
     res.send(thisUser)
@@ -54,7 +53,6 @@ router.post('/:id/add-friend', async (req, res) => {
 
 router.post('/:id/unfriend', async (req, res) => {
     const thisUser = await UserService.find(req.params.id)
-    // IF THE FRIEND TO BE REMOVED IS A USER
     await UserService.unfriend(thisUser,req.body.friend)
     res.send(thisUser)
 })
@@ -63,9 +61,8 @@ router.post('/:id/unfriend', async (req, res) => {
 
 router.post('/:id/save-gift-idea', async (req, res) => {
     const thisUser = await UserService.find(req.params.id)
-    // IF THE GIFT EXISTS
-    const gift = await GiftService.find(req.body.id)
-    await thisUser.saveGiftIdea(gift)
+    const gift = await GiftService.find(req.body.gift)
+    await UserService.saveGiftIdea(thisUser,gift)
     res.send(thisUser)
     })
 
@@ -73,7 +70,8 @@ router.post('/:id/save-gift-idea', async (req, res) => {
 
 router.post('/:id/discard-gift-idea', async (req, res) => {
     const thisUser = await UserService.find(req.params.id)
-    await thisUser.discardGiftIdea(req.body.id)
+    const gift = await GiftService.find(req.body.gift)
+    await UserService.discardGiftIdea(thisUser, gift)
     res.send(thisUser)
 })
 
