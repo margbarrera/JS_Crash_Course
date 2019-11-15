@@ -51,8 +51,6 @@ class UserService extends BaseService {
         } else {
             console.log('You have not saved any idea with an Id of '+gift)
         }
-                
-
     }
 
 }
