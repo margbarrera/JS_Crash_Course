@@ -78,6 +78,13 @@ router.post('/:id/add-gift', async (req, res) => {
     res.send(gift)
 })
 
+router.post('/:id/remove-gift', async (req, res) => {
+    const thisEvent = await EventService.find(req.params.id)
+    const gift = await GiftService.find(req.body.gift)
+    await EventService.removeGift(thisEvent, gift) 
+    res.send(gift)
+})
+
 
 
 module.exports = router

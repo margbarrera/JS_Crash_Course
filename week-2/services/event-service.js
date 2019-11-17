@@ -10,7 +10,6 @@ class EventService extends BaseService {
 
 
     async inviteGuest(event, guest) {
-
         if (await Common.containsObjectId(event.guestList, guest)) {
             Common.print('This person has already been invited.')
         } else {
@@ -18,11 +17,10 @@ class EventService extends BaseService {
             Common.print(guest.name+' has been invited to '+event.name)
             await event.save()
         }
-
      }
 
-     async removeGuest(event, guest) {
 
+     async removeGuest(event, guest) {
         if (await Common.containsObjectId(event.guestList, guest)) {
             let index = event.guestList.findIndex(x => x == guest)
             event.guestList.splice(index, 1)
@@ -35,7 +33,6 @@ class EventService extends BaseService {
 
      async checkInvitation(event, guest) {
         if (await Common.containsObjectId(event.guestList, guest)) {
-            Common.print(guest.name +' is invited to the '+event.name+' event.')
             return true
         } else {
             Common.print(guest.name +' is not invited to the '+event.name+' event.')
@@ -43,15 +40,16 @@ class EventService extends BaseService {
         }
      }
 
+
      async checkIfGiftIsPresent(event, gift) {
         if (await Common.containsObjectId(event.giftList, gift)) {
             Common.print(gift.name +' is already present in the '+event.name+' gift list.')
             return true
         } else {
-            Common.print(gift.name +' is not present in the '+event.name+' gift list.')
             return false
         }
      }
+
 
      async addGiftToEvent(event, user, gift) {
         if (await this.checkInvitation(event, user)) {
@@ -65,6 +63,16 @@ class EventService extends BaseService {
             common.print('The user must be invited to the event to be able to partecipate')
         }
     }
+
+    async removeGift(event, gift) {
+        if (await Common.containsObjectId(event.giftList, gift)) {
+            let index = event.giftList.findIndex(x => x == gift)
+            event.giftList.splice(index, 1)
+            await event.save()
+        } else {
+            Common.print('There are no gifts with an Id of '+guest)
+        }
+     }
 
 }
 
