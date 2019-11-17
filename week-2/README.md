@@ -22,32 +22,32 @@ But for clarity, some examples:
 
 ### USER:
 
-**ADDING FRIENDS:**
+**ADDING FRIENDS:**<br>
 axios.post('/user/5dcd727ee3852100bea9850a/add-friend', {friend:'5dcecd61e7f7a31ef9fd36fc'})
 
 
-**UN-FRIENDING:**
+**UN-FRIENDING:**<br>
 axios.post('/user/5dcd727ee3852100bea9850a/unfriend', {friend:'5dcecd61e7f7a31ef9fd36fc'})
 
 
-**SAVING GIFT IDEA**
+**SAVING GIFT IDEA:**<br>
 axios.post('/user/5dcd727ee3852100bea9850a/save-gift-idea', {gift:'5dcece7ce7f7a31ef9fd36fe'})
 
 
-**DISCARD GIFT IDEAS**
+**DISCARD GIFT IDEAS:**<br>
 axios.post('/user/5dcd727ee3852100bea9850a/discard-gift-idea', {gift:'5dcece7ce7f7a31ef9fd36fe'})
 
 
 ### EVENT:
 
-**INVITE GUEST**
+**INVITE GUEST:**<br>
 axios.post('/event/5dced47a1c1a9a2065fc6352/invite-guest', {guest:'5dcecd61e7f7a31ef9fd36fc'})
 
-**REMOVE GUEST**
+**REMOVE GUEST:**<br>
 axios.post('/event/5dced47a1c1a9a2065fc6352/remove-guest', {guest:'5dcecd61e7f7a31ef9fd36fc'})
 
-**ADD GIFT TO EVENT** (requires a user who wants to contribute, and a gift)
+**ADD GIFT TO EVENT:** (requires a user who wants to contribute, and a gift)<br>
 axios.post('/event/5dd1243c6fc9dc25c3d05824/add-gift', {user:'5dcecd61e7f7a31ef9fd36fc', gift:'5dcd733365694d00dcb4e299' })
 
-**REMOVE GIFT FROM EVENT GIFT LIST**
+**REMOVE GIFT FROM EVENT GIFT LIST:**<br>
 axios.post('/event/5dd1243c6fc9dc25c3d05824/remove-gift', {gift:'5dcec289c2c77e1d1852d5af' })
