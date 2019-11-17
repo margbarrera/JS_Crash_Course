@@ -55,29 +55,13 @@ const UserModel = mongoose.model('User', UserSchema)
 module.exports = UserModel
 
 
-// module.exports = class User {
-//     constructor(name, birthday, id = undefined, socialCircle = [], unassignedGiftIdeas = [], assignedGiftIdea = [], calendar = {}, pastGifts = []) {
-//         this.name = name
-//         this.birthday = birthday
-//         this.id = id
-//         this.socialCircle = socialCircle
-//         this.unassignedGiftIdeas = unassignedGiftIdeas
-//         this.assignedGiftIdeas = assignedGiftIdea /*this will contain pairs in the form friend.id : gift.id */
-//         this.calendar = calendar
-//         this.pastGifts = pastGifts
-//     }
-   
+
 //     async createCalendar() {
 //         const userCal = new Calendar(this.id);
 //         // await CalendarService.add(userCal);
 //         this.calendar = userCal
 //         return userCal
 //     }
-
-
-
-
-
 
 //     async assignGiftIdea(friend, gift) {
 //         this.assignedGiftIdeas[friend.id] = gift.id
@@ -105,14 +89,3 @@ module.exports = UserModel
 //         }
 
 //     }
-
-//     static create({ name, birthday, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar, pastGifts }) {
-//         const user = new User(name, birthday, id, socialCircle, unassignedGiftIdeas, assignedGiftIdea, calendar, pastGifts )
-
-//         user.calendar = Calendar.create(calendar)
-
-//         return user    
-        
-//     }
-
-// }

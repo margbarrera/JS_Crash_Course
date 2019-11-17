@@ -1,12 +1,3 @@
-const User = require('./models/user');
-const Gift = require('./models/gift');
-const Calendar = require('./models/calendar');
-const Friend = require('./models/friend');
-const Event = require('./models/event');
-const common = require('./common')
-
-//const CalendarService = require('./services/calendar-service');
-
 const userRouter = require('./routes/user')
 const friendRouter = require('./routes/friend')
 const giftRouter = require('./routes/gift')

@@ -10,7 +10,7 @@ class UserService extends BaseService {
     async addFriend(user, friend) {
 
         if (await Common.containsObjectId(user.socialCircle, friend)) {
-            console.log(friend.name+' is already a friend!')
+            Common.print(friend.name+' is already a friend!')
         } else {
             user.socialCircle.push(friend)
             await user.save()
@@ -24,17 +24,17 @@ class UserService extends BaseService {
             user.socialCircle.splice(index, 1)
             await user.save()
         } else {
-            console.log('You have no friends with an Id of '+friend)
+            Common.print('You have no friends with an Id of '+friend)
         }
     }
 
     async saveGiftIdea(user, gift) {
         
         if (await Common.containsObjectId(user.unassignedGiftIdeas, gift)) {
-            console.log('You already saved this item.')
+            Common.print('You already saved this item.')
         } else {
             user.unassignedGiftIdeas.push(gift)
-            console.log('You saved '+gift.name)
+            Common.print('You saved '+gift.name)
             await user.save()
         }
     }
@@ -45,11 +45,11 @@ class UserService extends BaseService {
          if (await Common.containsObjectId(user.unassignedGiftIdeas, gift)) {
             let index = user.unassignedGiftIdeas.findIndex(x => x == gift)
             user.unassignedGiftIdeas.splice(index, 1)
-            console.log('You discarded '+gift.name)
+            Common.print('You discarded '+gift.name)
 
             await user.save()
         } else {
-            console.log('You have not saved any idea with an Id of '+gift)
+            Common.print('You have not saved any idea with an Id of '+gift)
         }
     }
 

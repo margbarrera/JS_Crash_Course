@@ -8,7 +8,10 @@ block content
     p1 #{fetchedEvent.date}
     h4 Guests:
     p1 #{fetchedEvent.guestList.length} 
+    h4 Gifts:
+    p1 #{fetchedEvent.giftList.length} 
     script.
-        // console.log('To invite a guest to this event post their ID. Ex.: axios.post(\'/event/1\', {id: 3})')
+         console.log('To invite a guest to this event post their ID. Ex.: axios.post(\'/event/1/invite-guest\', {guest: 3})')
+         console.log('To add a gift to this event post their ID, alongside your ID. Ex.: axios.post(\'/event/1/invite-guest\', {user: 3, gift: 2})')
 
 
