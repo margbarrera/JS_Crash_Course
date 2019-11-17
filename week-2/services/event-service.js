@@ -41,9 +41,9 @@ class EventService extends BaseService {
      }
 
 
-     async checkIfGiftIsPresent(event, gift) {
-        if (await Common.containsObjectId(event.giftList, gift)) {
-            Common.print(gift.name +' is already present in the '+event.name+' gift list.')
+     async checkIfGiftIsPresent(event, giftobj) {
+        if (await Common.containsObjectAsValue(event.giftList, 'gift', giftobj)) {
+            Common.print(giftobj.name +' is already present in the '+event.name+' gift list.')
             return true
         } else {
             return false
@@ -51,16 +51,17 @@ class EventService extends BaseService {
      }
 
 
-     async addGiftToEvent(event, user, gift) {
-        if (await this.checkInvitation(event, user)) {
-            if (await this.checkIfGiftIsPresent(event, gift)) { 
+     async addGiftToEvent(event, userobj, giftobj) {
+        if (await this.checkInvitation(event, userobj)) {
+            if (await this.checkIfGiftIsPresent(event, giftobj)) { 
                 Common.print('Somebody already bought this gift for this event. Try to think of somenthig else, it will be much more appreciated.')
             } else { 
-                event.giftList.push(gift) 
+                const submittedGift = {gift : giftobj._id, submittedby : userobj._id}
+                event.giftList.push(submittedGift) 
                 await event.save()
             }
         } else {
-            common.print('The user must be invited to the event to be able to partecipate')
+            Common.print('The user must be invited to the event to be able to partecipate')
         }
     }
 

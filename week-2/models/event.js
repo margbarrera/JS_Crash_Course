@@ -28,11 +28,22 @@ const EventSchema = new mongoose.Schema({
             }
     }],
     giftList: [{
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Gift',
-        autopopulate: {
-            maxDepth: 1
+        type : Object,
+        gift: {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'Gift',
+            autopopulate: {
+                maxDepth: 1
             }
+        },
+        submittedBy: {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'User',
+            autopopulate: {
+                maxDepth: 1
+            }
+        }
+
     }],
 })
 

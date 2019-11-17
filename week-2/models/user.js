@@ -16,9 +16,9 @@ const UserSchema = new mongoose.Schema({
             required: true,
         },
     socialCircle: [{
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: 'User',
-            autopopulate: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'User',
+        autopopulate: {
                 maxDepth: 1
                 }
         }],
@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema({
     }],
 
     assignedGiftIdeas: {
-        type: Array,
+        type: Object,
         required: false,
         },
 

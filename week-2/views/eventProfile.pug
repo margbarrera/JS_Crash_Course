@@ -7,8 +7,24 @@ block content
     h4 Date:
     p1 #{fetchedEvent.date}
     h4 Guests:
-    p1 #{fetchedEvent.guestList.length} 
+    each guest in fetchedEvent.guestList
+        if (fetchedEvent.guestList.length > 1)
+            if !(guest == fetchedEvent.guestList[fetchedEvent.guestList.length-1])
+                p1 #{guest.name+', '}
+            else
+                p1 #{guest.name}
+        else
+            p1 #{guest.name}
     h4 Gifts:
+    each pair in fetchedEvent.giftList
+        if (fetchedEvent.giftList.length > 1)
+            if !(pair == fetchedEvent.guestList[fetchedEvent.giftList.length-1])
+                p1 #{pair.gift+' ('+pair.submittedBy+'), '}
+            else
+                p1 #{pair.gift+' ('+pair.submittedBy+')'}
+        else
+            p1 #{pair.gift+' ('+pair.submittedBy+')'}
+    h4 How many gifts:
     p1 #{fetchedEvent.giftList.length} 
     script.
          console.log('To invite a guest to this event post their ID. Ex.: axios.post(\'/event/1/invite-guest\', {guest: 3})')

@@ -21,27 +21,26 @@ const containsObjectId = async function (list, obj) {
     list.forEach(element => {
         if (element._id.equals(obj._id) ){
             doesIt = true        
-        }
-        else {
+        } else {
             doesIt = false }
     })
     return doesIt      
 }
 
-const clearDB = function() {
-    const path = "/Users/margheritabarrera/projects/JS_Crash_Course/week-2/";
-    const db = [
-        "friend-database.json",
-        "event-database.json",
-        "gift-database.json",
-        "user-database.json",
-        "calendar-database.json"
-    ];
-    for (file of db) {
-        if (fs.existsSync(path + file)) {
-            fs.unlinkSync(path + file, print('cleared'))
+
+const containsObjectAsValue = async function (list, prop, obj) {
+    let doesIt = false
+    list.forEach( element => {
+        let value = element[prop]
+        if (value.equals(obj._id)) {
+            doesIt = true
+        } else {
+            doesIt = false
         }
-    }
+    })
+    return doesIt
 }
 
-module.exports = { print, dontPrint, echo, clearDB, containsObjectId }
+
+
+module.exports = { print, dontPrint, echo, containsObjectId, containsObjectAsValue }
