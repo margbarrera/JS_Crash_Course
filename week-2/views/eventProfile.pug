@@ -28,6 +28,7 @@ block content
     p1 #{fetchedEvent.giftList.length} 
     script.
          console.log('To invite a guest to this event post their ID. Ex.: axios.post(\'/event/1/guests\', {guest: 3})')
-         console.log('To add a gift to this event post their ID, alongside your ID. Ex.: axios.post(\'/event/1/guests\', {user: 3, gift: 2})')
+         console.log('To uninvite a guest to this event post their ID. Ex.: axios.delete(\'/event/1/guests/3\', {})')
+         console.log('To add a gift to this event post their ID, alongside your ID. Ex.: axios.post(\'/event/1/gifts\', {user: 3, gift: 2})')
 
 

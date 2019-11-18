@@ -4,10 +4,10 @@ block content
     h1 #{fetchedUser.name}
     script.
         console.log('try to add a user as a friend, like this: axios.post(\'/user/1/friends\', {friend:\'2\'})')
-        console.log('To remove a friend, use their ID: axios.post(\'/user/1/friends/2\', {})')
+        console.log('To remove a friend, use their ID: axios.delete(\'/user/1/friends/2\', {})')
         console.log('To save a gift idea without a specific recipient in mind, use its ID:')
-        console.log('Example: axios.post(\'/user/1/save-gift-idea\', {gift:\'2\'})')
-        console.log('To discard a gift idea use its ID: axios.post(\'/user/1/discard-gift-idea\', {gift:\'2\'})')
+        console.log('Example: axios.post(\'/user/1/gifts\', {gift:\'2\'})')
+        console.log('To discard a gift idea use its ID: axios.delete(\'/user/1/gifts/2\', {})')
         
     h4 ID: #{fetchedUser.id}
     h4 Friends:

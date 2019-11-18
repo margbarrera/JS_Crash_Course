@@ -77,17 +77,14 @@ router.post('/:id/gifts', async (req, res) => {
 })
 
 // DELETE GIFT FROM EVENT GIFTLIST
-// CURRENTLY DOESNT WORK
 
-
-// router.delete('/:id/gifts/:giftid', async (req, res) => {
-//     const thisEvent = await EventService.find(req.params.id)
-//     const giftid = req.params.giftid
-//     console.log(giftid)
-//     const gift = await GiftService.find(giftid)
-//     await EventService.removeGift(thisEvent, gift) 
-//     res.send(gift)
-// })
+router.delete('/:id/gifts/:giftid', async (req, res) => {
+    const thisEvent = await EventService.find(req.params.id)
+    const giftid = req.params.giftid
+    const gift = await GiftService.find(giftid)
+    await EventService.removeGift(thisEvent, gift) 
+    res.send(gift)
+})
 
 
 

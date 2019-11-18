@@ -23,31 +23,31 @@ But for clarity, some examples:
 ### USER:
 
 **ADDING FRIENDS:**<br>
-axios.post('/user/5dcd727ee3852100bea9850a/add-friend', {friend:'5dcecd61e7f7a31ef9fd36fc'})
+axios.post('/user/5dcd727ee3852100bea9850a/friends’, {friend:'5dcecd61e7f7a31ef9fd36fc'})
 
 
 **UN-FRIENDING:**<br>
-axios.post('/user/5dcd727ee3852100bea9850a/unfriend', {friend:'5dcecd61e7f7a31ef9fd36fc'})
+axios.post('/user/5dcd727ee3852100bea9850a/friends/5dcecd61e7f7a31ef9fd36fc’, {})
 
 
 **SAVING GIFT IDEA:**<br>
-axios.post('/user/5dcd727ee3852100bea9850a/save-gift-idea', {gift:'5dcece7ce7f7a31ef9fd36fe'})
+axios.post('/user/5dd29f449699c539d9690a02/gifts’, {gift:'5dcd733365694d00dcb4e299'})
 
 
 **DISCARD GIFT IDEAS:**<br>
-axios.post('/user/5dcd727ee3852100bea9850a/discard-gift-idea', {gift:'5dcece7ce7f7a31ef9fd36fe'})
+axios.delete('/user/5dd29f449699c539d9690a02/gifts/5dcd733365694d00dcb4e299', {})
 
 
 ### EVENT:
 
 **INVITE GUEST:**<br>
-axios.post('/event/5dced47a1c1a9a2065fc6352/invite-guest', {guest:'5dcecd61e7f7a31ef9fd36fc'})
+axios.post('/event/5dcd72ade3852100bea9850c/guests', {guest:'5dd29f449699c539d9690a02'})
 
 **REMOVE GUEST:**<br>
-axios.post('/event/5dced47a1c1a9a2065fc6352/remove-guest', {guest:'5dcecd61e7f7a31ef9fd36fc'})
+axios.delete('/event/5dced47a1c1a9a2065fc6352/guests/5dcd728de3852100bea9850b', {})
 
 **ADD GIFT TO EVENT:** (requires a user who wants to contribute, and a gift)<br>
-axios.post('/event/5dd1243c6fc9dc25c3d05824/add-gift', {user:'5dcecd61e7f7a31ef9fd36fc', gift:'5dcd733365694d00dcb4e299' })
+axios.post('/event/5dcd72ade3852100bea9850c/gifts', { user:'5dd29f449699c539d9690a02', gift:'5dcd733365694d00dcb4e299' })
 
 **REMOVE GIFT FROM EVENT GIFT LIST:**<br>
-axios.post('/event/5dd1243c6fc9dc25c3d05824/remove-gift', {gift:'5dcec289c2c77e1d1852d5af' })
+axios.delete(‘/event/5dd1243c6fc9dc25c3d05824/gifts/5dcec289c2c77e1d1852d5af’, {})

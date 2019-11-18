@@ -67,15 +67,16 @@ class EventService extends BaseService {
         }
     }
 
-    // async removeGift(event, gift) {
-    //     if (await Common.containsObjectAsValue(event.giftList, 'gift',gift)) {
-    //         let index = event.giftList.findIndex(x => x.gift._id == gift._id)
-    //         event.giftList.splice(index, 1)
-    //         await event.save()
-    //     } else {
-    //         Common.print('There are no gifts with an Id of '+gift)
-    //     }
-    //  }
+    async removeGift(event, giftobj) {
+        const dbcheck = await Common.checkObjectListContainsNestedValue(event, 'giftList', 'gift', giftobj._id)
+        if (dbcheck) {
+            let index = event.giftList.findIndex(x => x.gift._id == giftobj._id)
+            event.giftList.splice(index, 1)
+            await event.save()
+        } else {
+            Common.print('There are no gifts with an Id of '+gift)
+        }
+     }
 
 }
 
