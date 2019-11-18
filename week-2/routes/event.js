@@ -19,7 +19,15 @@ router.get('/all', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     const id = req.params.id
-    const fetchedEvent = await EventService.find(id)
+    //const fetchedEvent = await EventService.find(id)
+    //const fetchedEvent = await EventService.model.findById(id).populate({ path: 'giftList.gift', model: 'Gift' })
+    const fetchedEvent = await EventService.model.findById(id).populate([{
+                path: 'giftList.gift',
+                model: 'Gift'
+            }, {
+                path: 'giftList.submittedby',
+                model: 'User'
+            }])
     res.render('eventProfile',{ fetchedEvent: fetchedEvent})
 })
 
@@ -42,7 +50,7 @@ router.delete('/:id', async (req, res) => {
 
 // INVITING GUEST TO EVENT
 
-router.post('/:id/invite-guest', async (req, res) => {
+router.post('/:id/guests', async (req, res) => {
     const thisEvent = await EventService.find(req.params.id)
     const userToInvite = await UserService.find(req.body.guest) 
     await EventService.inviteGuest(thisEvent,userToInvite) 
@@ -51,26 +59,16 @@ router.post('/:id/invite-guest', async (req, res) => {
 
 // DIS-INVITING GUEST TO EVENT (I mean, sometimes they deserve it)
 
-router.post('/:id/remove-guest', async (req, res) => {
+router.delete('/:id/guests/:guestid', async (req, res) => {
     const thisEvent = await EventService.find(req.params.id)
-    const userToRemove = await UserService.find(req.body.guest) 
+    const userToRemove = await UserService.find(req.params.guestid) 
     await EventService.removeGuest(thisEvent,userToRemove) 
     res.send(thisEvent)
 })
 
-// CHECK INVITATION & CHECK I GIFT IS ALREADY PRESENT
-// Might be completely useless as URLs - I'm commenting it out and we'll see
-
-// router.post('/:id/check-invitation', async (req, res) => {
-//     const thisEvent = await EventService.find(req.params.id)
-//     const userToInvite = await UserService.find(req.body.guest)
-//     const answer = await EventService.checkInvitation(thisEvent,userToInvite) 
-//     res.send(answer)
-// })
-
 // ADD GIFT TO EVENT GIFTLIST
 
-router.post('/:id/add-gift', async (req, res) => {
+router.post('/:id/gifts', async (req, res) => {
     const thisEvent = await EventService.find(req.params.id)
     const user = await UserService.find(req.body.user)
     const gift = await GiftService.find(req.body.gift)
@@ -78,12 +76,18 @@ router.post('/:id/add-gift', async (req, res) => {
     res.send(gift)
 })
 
-router.post('/:id/remove-gift', async (req, res) => {
-    const thisEvent = await EventService.find(req.params.id)
-    const gift = await GiftService.find(req.body.gift)
-    await EventService.removeGift(thisEvent, gift) 
-    res.send(gift)
-})
+// DELETE GIFT FROM EVENT GIFTLIST
+// CURRENTLY DOESNT WORK
+
+
+// router.delete('/:id/gifts/:giftid', async (req, res) => {
+//     const thisEvent = await EventService.find(req.params.id)
+//     const giftid = req.params.giftid
+//     console.log(giftid)
+//     const gift = await GiftService.find(giftid)
+//     await EventService.removeGift(thisEvent, gift) 
+//     res.send(gift)
+// })
 
 
 

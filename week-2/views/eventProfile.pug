@@ -18,16 +18,16 @@ block content
     h4 Gifts:
     each pair in fetchedEvent.giftList
         if (fetchedEvent.giftList.length > 1)
-            if !(pair == fetchedEvent.guestList[fetchedEvent.giftList.length-1])
-                p1 #{pair.gift+' ('+pair.submittedBy+'), '}
+            if !(pair == fetchedEvent.giftList[fetchedEvent.giftList.length-1])
+                p1 #{pair.gift.name+' ('+pair.submittedby.name+'), '}
             else
-                p1 #{pair.gift+' ('+pair.submittedBy+')'}
+                p1 #{pair.gift.name+' ('+pair.submittedby.name+')'}
         else
-            p1 #{pair.gift+' ('+pair.submittedBy+')'}
+            p1 #{pair.gift.name+' ('+pair.submittedby.name+')'}
     h4 How many gifts:
     p1 #{fetchedEvent.giftList.length} 
     script.
-         console.log('To invite a guest to this event post their ID. Ex.: axios.post(\'/event/1/invite-guest\', {guest: 3})')
-         console.log('To add a gift to this event post their ID, alongside your ID. Ex.: axios.post(\'/event/1/invite-guest\', {user: 3, gift: 2})')
+         console.log('To invite a guest to this event post their ID. Ex.: axios.post(\'/event/1/guests\', {guest: 3})')
+         console.log('To add a gift to this event post their ID, alongside your ID. Ex.: axios.post(\'/event/1/guests\', {user: 3, gift: 2})')
 
 

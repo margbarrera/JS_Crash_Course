@@ -1,7 +1,4 @@
-const shortid = require('shortid');
-const Database = require('../database'); 
 const common = require('../common')
-
 const mongoose = require('mongoose')
 
 const FriendSchema = new mongoose.Schema({

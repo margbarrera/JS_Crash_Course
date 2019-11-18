@@ -42,7 +42,7 @@ router.delete('/:id', async (req, res) => {
 
 // ADDING FRIENDS TO USER
 
-router.post('/:id/add-friend', async (req, res) => {
+router.post('/:id/friends', async (req, res) => {
     const thisUser = await UserService.find(req.params.id)
     const friendToAdd = await UserService.find(req.body.friend) 
     await UserService.addFriend(thisUser, friendToAdd)
@@ -51,15 +51,15 @@ router.post('/:id/add-friend', async (req, res) => {
 
 // REMOVING A FRIEND FROM USER'S SOCIAL CIRCLE
 
-router.post('/:id/unfriend', async (req, res) => {
+router.delete('/:id/friends/:friendid', async (req, res) => {
     const thisUser = await UserService.find(req.params.id)
-    await UserService.unfriend(thisUser,req.body.friend)
+    await UserService.unfriend(thisUser,req.params.friendid)
     res.send(thisUser)
 })
 
 // SAVING A GIFT IDEA
 
-router.post('/:id/save-gift-idea', async (req, res) => {
+router.post('/:id/gifts', async (req, res) => {
     const thisUser = await UserService.find(req.params.id)
     const gift = await GiftService.find(req.body.gift)
     await UserService.saveGiftIdea(thisUser,gift)
@@ -68,9 +68,9 @@ router.post('/:id/save-gift-idea', async (req, res) => {
 
 // DISCARDING A GIFT IDEA
 
-router.post('/:id/discard-gift-idea', async (req, res) => {
+router.delete('/:id/gifts/:giftid', async (req, res) => {
     const thisUser = await UserService.find(req.params.id)
-    const gift = await GiftService.find(req.body.gift)
+    const gift = await GiftService.find(req.params.giftid)
     await UserService.discardGiftIdea(thisUser, gift)
     res.send(thisUser)
 })

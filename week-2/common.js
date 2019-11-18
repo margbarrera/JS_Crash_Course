@@ -15,32 +15,62 @@ const echo = function(x) {
     console.log(x)
     return x
 }
-// I NEED TO CHANGE THIS CAUSE IT IS UGLY AND CONVOLUTED (but iit works so I can take my time)
-const containsObjectId = async function (list, obj) {
-    let doesIt = false
-    list.forEach(element => {
-        if (element._id.equals(obj._id) ){
-            doesIt = true        
-        } else {
-            doesIt = false }
-    })
-    return doesIt      
+
+// I NEED TO CHANGE THIS CAUSE IT IS UGLY AND CONVOLUTED (but it works so I can take my time)
+
+const checkObjectListContainsValue = async function (obj, list, value) {
+    const model = obj.constructor
+    let query = {'_id': obj._id}
+    query[list] = { '$in': [value] }
+    const queryCount = model.countDocuments(query);
+    return queryCount
 }
 
 
-const containsObjectAsValue = async function (list, prop, obj) {
-    let doesIt = false
-    list.forEach( element => {
-        let value = element[prop]
-        if (value.equals(obj._id)) {
-            doesIt = true
-        } else {
-            doesIt = false
-        }
-    })
-    return doesIt
+const checkObjectListContainsNestedValue = async function (obj, list, subprop, value){
+    const model = obj.constructor
+    // E.g. look for an object with gift:id in the giftLit for an event
+    // EventModel.countDocuments({
+    //     '_id': event._id,
+    //     'giftlist': {
+    //         '$elemMatch': { 'gift': { '$exists': true, '$in': [id] } }
+    //     }
+    // });
+    // building the query with dynamically specified keys because otherwise i cannot pass args to query
+    let query = {'_id': obj._id }
+    query[list] = {'$elemMatch' : {}}
+    query[list]['$elemMatch'][subprop] = {
+        '$exists': true, '$in': [value]
+    }
+    const queryCount = await model.countDocuments(query)
+    return queryCount
 }
 
 
 
-module.exports = { print, dontPrint, echo, containsObjectId, containsObjectAsValue }
+// esempio cerca se in un evento la guestlist contiene guest
+// eventModel.countDocuments({
+//     '_id': event._id,
+//     guestList: { '$in': [guest] }
+// });
+
+// checkIfObjectListContainsObjectWithValue = async function (obj, list, subprop, value)
+// UserModel.countDocuments({
+//     '_id': user._id,
+//     list: {
+//         '$elemMatch': { subprop: { '$exists': true, '$in': [value] } }
+//     }
+// });
+
+// esempio cerca se in un evento la lista dei regali contiene un regalo con id
+// EventModel.countDocuments({
+//     '_id': event._id,
+//     'giftlist': {
+//         '$elemMatch': { 'gift': { '$exists': true, '$in': [id] } }
+//     }
+// });
+
+
+
+
+module.exports = { print, dontPrint, echo, checkObjectListContainsValue, checkObjectListContainsNestedValue }
