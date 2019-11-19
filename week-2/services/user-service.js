@@ -1,6 +1,7 @@
 const BaseService = require('./base-service')
-const FriendService = require('./friend-service')
+const CalendarService = require('./calendar-service')
 const UserModel = require('../models/user')
+const CalendarModel = require('../models/calendar')
 const Common = require('../common')
 
 class UserService extends BaseService {
@@ -8,13 +9,14 @@ class UserService extends BaseService {
         super(UserModel)
     }
 
-
+    async add(item) {
+        const newUser = await UserModel.create(item)
+        // should I call the Service instead?
+        await CalendarModel.create({creator : newUser._id})
+        return newUser
+      }
 
     async addFriend(user, friend) {
-////////////////
-// const newFriend = await FriendService.add(friend)
-// user.socialCircle.push(newFriend)
-////////////////
 
         if (await Common.checkObjectListContainsValue(user,'socialCircle',friend)) {
             Common.print(friend.name+' is already a friend!')
