@@ -3,6 +3,7 @@ const router = express.Router()
 
 const UserService = require('../services/user-service');
 const GiftService = require('../services/gift-service');
+const AccountService = require('../services/account-service');
 
 ///////////////////////// USERS /////////////////////////
 
@@ -10,7 +11,6 @@ const GiftService = require('../services/gift-service');
 
 router.get('/all', async (req, res) => {
     const allUsers = await UserService.findAll()
-    //const allCalendars = await CalendarService.findAll()
     res.render('users', { allUsers: allUsers})
 })
 
@@ -18,16 +18,24 @@ router.get('/all', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     const id = req.params.id
-    const fetchedUser = await UserService.find(id)
+    const fetchedUser = await UserService.model.findById(id).populate([{
+        path: 'assignedGiftIdeas.friend',
+        model: 'User'
+    }, {
+        path: 'assignedGiftIdeas.gift',
+        model: 'Gift'
+    }])
     res.render('userProfile', {fetchedUser: fetchedUser})
 })
 
 // CREATE USER
 
 router.post('/', async (req, res) => {
-    const user = await UserService.add(req.body)
+    
+    const user = await AccountService.add(req.body)
+
+    //const user = await UserService.add(req.body)
     const newUser = await UserService.find(user.id)
-    //await newUser.createCalendar()
     res.send(newUser)
 })
 
@@ -73,6 +81,41 @@ router.delete('/:id/gifts/:giftid', async (req, res) => {
     const gift = await GiftService.find(req.params.giftid)
     await UserService.discardGiftIdea(thisUser, gift)
     res.send(thisUser)
+})
+
+// PLAN A GIFT FOR A SPECIFIC FRIEND 
+
+router.post('/:id/friends/:friendid/gift', async (req, res) => {
+    const thisUser = await UserService.find(req.params.id)
+    const friend = await UserService.find(req.params.friendid)
+    const gift = await GiftService.find(req.body.gift)
+    await UserService.assignGiftIdea(thisUser, friend, gift)
+    res.send(thisUser)
+    })
+
+
+// FETCH GIFTS FOR A SPECIFIC FRIEND - AT SOME POINT THID WILL BE USEFUL
+
+router.get('/:id/friends/:friendid/gift', async(req, res) => {
+    const thisUser = await UserService.find(req.params.id)
+    const thisFriend = await UserService.find(req.params.friendid)
+    const filteredGiftIds = await UserService.getFriendGifts(thisUser, thisFriend)
+    // this works but we don't want to expose the model here
+    // const plannedGiftsObjects = await GiftModel.find().where('_id').in(filteredGiftIds);
+    // it would be nice if this worked but it does not. why????
+    // const plannedGiftsObjects =  await GiftService.findAll().where('_id').in(filteredGiftIds);
+    // solved by running on a generic query framework
+    const plannedGiftsObjects =  await GiftService.query({'_id' : {'$in' : filteredGiftIds}})
+    res.render('userFriendGift', {plannedGifts: plannedGiftsObjects})
+})
+
+
+// FETCH GIFTS FOR A SPECIFIC FRIEND - AT SOME POINT THID WILL BE USEFUL
+
+router.get('/:id/calendar', async(req,res) => {
+    const thisUser = await UserService.find(req.params.id)
+    const upcoming = await AccountService.checkCalendar(thisUser)
+    res.render('upcomingEvent', {upcomingEvent: upcoming})
 })
 
 module.exports = router

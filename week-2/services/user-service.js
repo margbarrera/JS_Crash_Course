@@ -1,7 +1,6 @@
 const BaseService = require('./base-service')
-const CalendarService = require('./calendar-service')
 const UserModel = require('../models/user')
-const CalendarModel = require('../models/calendar')
+const AccountService = require('./account-service')
 const Common = require('../common')
 
 class UserService extends BaseService {
@@ -11,10 +10,11 @@ class UserService extends BaseService {
 
     async add(item) {
         const newUser = await UserModel.create(item)
-        // should I call the Service instead?
-        await CalendarModel.create({creator : newUser._id})
+        // should I call a new Service instead? --> see account-service
+        //await CalendarModel.create({creator : newUser._id})
         return newUser
       }
+
 
     async addFriend(user, friend) {
 
@@ -22,6 +22,7 @@ class UserService extends BaseService {
             Common.print(friend.name+' is already a friend!')
         } else {
             user.socialCircle.push(friend)
+            await AccountService.addToCalendar(user,`${friend.name} (birthday)`,friend.birthday)
             await user.save()
         }
     }
@@ -62,6 +63,22 @@ class UserService extends BaseService {
         }
     }
 
+    async assignGiftIdea(user, friend, gift) {
+
+        const assignment = {'friend': friend._id, 'gift': gift._id}
+        user.assignedGiftIdeas.push(assignment)
+        console.log(user.name+' assigned '+gift.name+' to '+friend.name)
+        await user.save()
+        
+    }
+    // I HATE ALL OF THIS. THIS DOESNT WORK IT'S SO STUPID ARGH I WANT TO PUNCH COMPUTERS
+    async getFriendGifts(user, friend) {
+
+        const plannedGifts = user.assignedGiftIdeas
+        const filteredGiftPairs = plannedGifts.filter(x => x.friend.equals(friend._id))
+        const filteredGiftIds = filteredGiftPairs.map(x => x = x.gift)
+        return filteredGiftIds
+    }
 }
 
 module.exports = new UserService()

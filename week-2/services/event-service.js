@@ -1,6 +1,8 @@
 const BaseService = require('./base-service')
 const EventModel = require('../models/event')
 const Common = require('../common')
+const AccountService = require('./account-service')
+
 
 
 class EventService extends BaseService {
@@ -8,13 +10,14 @@ class EventService extends BaseService {
         super(EventModel)
     }
 
-
+// THIS SHOULD HAVE ITS OWN INVITATION MODEL RIGHT?
     async inviteGuest(event, guest) {
         if ( await Common.checkObjectListContainsValue(event,'guestList',guest)) {
             Common.print('This person has already been invited.')
         } else {
             event.guestList.push(guest)
             Common.print(guest.name+' has been invited to '+event.name)
+            await AccountService.addToCalendar(guest,event.name,event.date)
             await event.save()
         }
      }
@@ -77,6 +80,21 @@ class EventService extends BaseService {
             Common.print('There are no gifts with an Id of '+gift)
         }
      }
+
+    async getGuestList(event){
+        const namesInGuestList = event.GuestList.map(x => x.name)
+        const formattedGuestList = namesInGuestList.join(', ')
+        return formattedGuestList
+    }
+
+//     async getGiftList() {
+//         common.print(`Gifts:`)
+//          for (let i=0; i< this.giftList.length; i++) {
+//             let guest = await GiftService.find(this.giftList[i]);
+//             common.print(guest.name)
+//         }
+//     }
+
 
 }
 

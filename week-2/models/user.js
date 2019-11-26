@@ -1,7 +1,7 @@
-const common = require('../common');
-const Calendar = require('./calendar');
-const GiftService = require('../services/gift-service')
-const Gift = require('./gift')
+//const common = require('../common');
+//const Calendar = require('./calendar');
+//const GiftService = require('../services/gift-service')
+//const Gift = require('./gift')
 
 const mongoose = require('mongoose')
 
@@ -31,14 +31,29 @@ const UserSchema = new mongoose.Schema({
             }
     }],
 
-    assignedGiftIdeas: {
+    assignedGiftIdeas: [{
         type: Object,
         required: false,
-        },
-
+        friend: {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'User',
+            autopopulate: {
+                maxDepth: 1
+                }
+            },
+        gift: {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'Gift',
+            autopopulate: {
+                maxDepth: 1
+                }
+            },
+     }],
+     
     calendar: {
-        type: Object,
-        required: false,
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Calendar',
+        required:false
     },
     
     pastGifts: {

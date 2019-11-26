@@ -16,11 +16,11 @@ const echo = function(x) {
     return x
 }
 
-// I NEED TO CHANGE THIS CAUSE IT IS UGLY AND CONVOLUTED (but it works so I can take my time)
 
 const checkObjectListContainsValue = async function (obj, list, value) {
     const model = obj.constructor
     let query = {'_id': obj._id}
+// building the query with dynamically specified keys because otherwise i cannot pass args to query
     query[list] = { '$in': [value] }
     const queryCount = model.countDocuments(query);
     return queryCount
@@ -47,28 +47,6 @@ const checkObjectListContainsNestedValue = async function (obj, list, subprop, v
 }
 
 
-
-// esempio cerca se in un evento la guestlist contiene guest
-// eventModel.countDocuments({
-//     '_id': event._id,
-//     guestList: { '$in': [guest] }
-// });
-
-// checkIfObjectListContainsObjectWithValue = async function (obj, list, subprop, value)
-// UserModel.countDocuments({
-//     '_id': user._id,
-//     list: {
-//         '$elemMatch': { subprop: { '$exists': true, '$in': [value] } }
-//     }
-// });
-
-// esempio cerca se in un evento la lista dei regali contiene un regalo con id
-// EventModel.countDocuments({
-//     '_id': event._id,
-//     'giftlist': {
-//         '$elemMatch': { 'gift': { '$exists': true, '$in': [id] } }
-//     }
-// });
 
 
 

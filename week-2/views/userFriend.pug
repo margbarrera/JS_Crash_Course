@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    h4 #{fetchedFriend.name}
+    p1 Birthday: #{fetchedFriend.birthday}
+    h5 Possible Gifts:
+    includes userFriendGift.pug

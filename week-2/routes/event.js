@@ -19,8 +19,6 @@ router.get('/all', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     const id = req.params.id
-    //const fetchedEvent = await EventService.find(id)
-    //const fetchedEvent = await EventService.model.findById(id).populate({ path: 'giftList.gift', model: 'Gift' })
     const fetchedEvent = await EventService.model.findById(id).populate([{
                 path: 'giftList.gift',
                 model: 'Gift'

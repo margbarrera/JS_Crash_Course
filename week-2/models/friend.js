@@ -11,6 +11,17 @@ const FriendSchema = new mongoose.Schema({
             type: Number,
             required: true,
         },
+    pastGifts: {
+            type: Array,
+            required: true,
+        },
+     creator: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'User',
+        autopopulate: {
+                maxDepth: 1
+                }
+        },
 
 })
 

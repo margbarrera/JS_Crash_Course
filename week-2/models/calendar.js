@@ -10,7 +10,7 @@ const CalendarSchema = new mongoose.Schema({
     },
     entries: {
         type: Array,
-        required: false,
+        required: true,
     }
 })
 

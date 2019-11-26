@@ -8,35 +8,18 @@ block content
         console.log('To save a gift idea without a specific recipient in mind, use its ID:')
         console.log('Example: axios.post(\'/user/1/gifts\', {gift:\'2\'})')
         console.log('To discard a gift idea use its ID: axios.delete(\'/user/1/gifts/2\', {})')
+
+
         
     h4 ID: #{fetchedUser.id}
-    h4 Friends:
-    each friend in fetchedUser.socialCircle
-        if (fetchedUser.socialCircle.length > 1)
-            if !(friend == fetchedUser.socialCircle[fetchedUser.socialCircle.length-1])
-                p1 #{friend.name+', '}
-            else
-                p1 #{friend.name}
-        else
-            p1 #{friend.name}
+    h4 Friends new way:
+    p1 #{fetchedUser.socialCircle.map(x => x.name).join(', ')}
     h4 Saved Gift Ideas:
-
-    each gift in fetchedUser.unassignedGiftIdeas
-        if (fetchedUser.unassignedGiftIdeas.length > 1)
-            if !(gift == fetchedUser.unassignedGiftIdeas[fetchedUser.unassignedGiftIdeas.length-1])
-                p1 #{gift.name+', '}
-            else
-                p1 #{gift.name}
-        else
-            p1 #{gift.name}
-
-
-    //- h4 Planned Gifts:
-    //- each val, index in fetchedUser.assignedGiftIdeas
-    //-     p1 #{index}: #{val}
-    //-     script.
-    //-         console.log(index)
-    //- p1 #{fetchedUser.assignedGiftIdeas}
+    p1 #{fetchedUser.unassignedGiftIdeas.map(x => x.name).join(', ')}
+    h4 Planned Gift Ideas:
+    p1 #{fetchedUser.assignedGiftIdeas.map(x => `${x.friend.name} (${x.gift.name})`).join(', ')}
     h4 Upcoming events:
-    //p1 #{fetchedUser.calendar.getUpcomingEvent()}
+    - var id = fetchedUser.id
+    - var calendarURL = '/user/'+id+'/calendar'
+    p1 For the moment you will have to check #[a(href=calendarURL) here]
 

@@ -8,6 +8,16 @@ module.exports = class Service {
     return this.model.find()
   }
 
+  async query(queryObj) {
+    return this.model.find(queryObj)
+  }
+
+  async addToProperty(object, property, value) {
+    //object[property].push(value)
+    object[property] = value
+    await object.save()
+}
+
   async add(item) {
     return this.model.create(item)
   }

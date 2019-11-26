@@ -28,6 +28,7 @@ const EventSchema = new mongoose.Schema({
     }],
     giftList: [{
         type : Object,
+        required: false,
         gift: {
             type: mongoose.SchemaTypes.ObjectId,
             ref: 'Gift',
@@ -55,21 +56,5 @@ module.exports = EventModel
 
 
 
-//     async getGuestList(){
-//         common.print(`Guests:`)
-//         // TO BE CHANGED AS IT CAN CONTAIN ALSO FRIENDS || also there's the async thing, shit -_-
-//         for (let i=0; i< this.guestList.length; i++) {
-//             let guest = await UserService.find(this.guestList[i]);
-//             common.print(guest.name)
-//         };
-//     }
-
-//     async getGiftList() {
-//         common.print(`Gifts:`)
-//          for (let i=0; i< this.giftList.length; i++) {
-//             let guest = await GiftService.find(this.giftList[i]);
-//             common.print(guest.name)
-//         }
-//     }
 
 

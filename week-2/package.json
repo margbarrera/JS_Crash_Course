@@ -15,5 +15,10 @@
     "mongoose": "^5.7.10",
     "mongoose-autopopulate": "^0.9.1",
     "pug": "^2.0.4"
+  },
+  "devDependencies": {
+    "ava": "^2.4.0",
+    "nyc": "^14.1.1",
+    "supertest": "^4.0.2"
   }
 }
